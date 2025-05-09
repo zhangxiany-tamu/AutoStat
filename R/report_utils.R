@@ -248,6 +248,16 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
     model_tables_html <- c(model_tables_html, "<p><em>Note: For best model table formatting, please install the 'knitr' and 'broom' R packages.</em></p>")
   }
 
+  # Temporarily set locale to "C" (standard English) for date formatting
+  old_locale <- Sys.getlocale("LC_TIME")
+  Sys.setlocale("LC_TIME", "C")
+
+  # Format the date in English
+  formatted_date <- format(Sys.Date(), "%B %d, %Y")
+
+  # Restore the original locale
+  Sys.setlocale("LC_TIME", old_locale)
+
   html_content <- c(
     "<!DOCTYPE html>", "<html lang='en'>", "<head>", "<meta charset='UTF-8'>", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>",
     "<title>Statistical Analysis Report</title>", "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>",
@@ -268,7 +278,7 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
     "blockquote { background: #f8f9fa; border-left: 5px solid #007bff; margin: 1.5em 0px; padding: 0.8em 1.2em; font-style: italic; }",
     "blockquote p { display: inline; }",
     "</style>", "</head>", "<body>", "<div class='container'>",
-    paste0("<h1>Statistical Analysis Report</h1>"), paste0("<p class='text-muted'>Date: ", format(Sys.Date(), "%B %d, %Y"), "</p>"),
+    paste0("<h1>Statistical Analysis Report</h1>"), paste0("<p class='text-muted'>Date: ", formatted_date, "</p>"),
     paste0("<h2>Executive Summary</h2>"), paste0("<p>This report addresses the following research question:</p>"),
     paste0("<blockquote class='blockquote'><p class='mb-0'>", current_html_escape(question), "</p></blockquote>"), # Escaped question
     paste0("<p><strong>Dataset Overview:</strong> A dataset with ", nrow(data), " observations and ", ncol(data), " variables was analyzed.</p>"), "<hr>",
