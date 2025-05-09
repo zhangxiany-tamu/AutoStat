@@ -1,6 +1,6 @@
 # AutoStat
 
-![autoStatR](https://img.shields.io/badge/R-autoStatR-blue)
+![autoStatR](https://img.shields.io/badge/R-AutoStat-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 **AutoStat** is an R package that harnesses the power of Large Language Models (LLMs) to automate statistical analysis workflows. It connects to various LLM providers (Claude, GPT, Gemini) to generate analysis plans, executable R code, and comprehensive reports based on your data and research questions.
@@ -55,7 +55,7 @@ results <- auto_stat(
 
 ## Supported LLM Providers
 
-Provider | Default Model | Setup
+Provider | Example Model | Setup
 ---------|---------------|------
 Anthropic | claude-3-opus-20240229 | Requires [Anthropic API key](https://console.anthropic.com/)
 OpenAI | gpt-4 | Requires [OpenAI API key](https://platform.openai.com/)
