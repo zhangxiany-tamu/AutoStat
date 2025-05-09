@@ -18,13 +18,13 @@
 
 ```r
 # Install from GitHub
-devtools::install_github("zhangxiany-tamu/autoStatR")
+devtools::install_github("zhangxiany-tamu/AutoStat")
 ```
 
 ## Quick Start
 
 ```r
-library(autoStatR)
+library(AutoStat)
 
 # Basic usage
 results <- auto_stat(
