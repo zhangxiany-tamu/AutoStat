@@ -19,6 +19,6 @@ A meaningful title string for the plot.
 \description{
 Generates a meaningful title for a plot based on its content, aesthetics, and structure.
 It prioritizes existing titles in ggplot objects and attempts to infer appropriate titles
-for other plot types.
+for other plot types, including plotly objects.
 }
 \keyword{internal}

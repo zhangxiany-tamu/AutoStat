@@ -53,13 +53,13 @@
 #' }
 #' @export
 auto_stat <- function(data, question, api_key,
-                               llm_provider = NULL,
-                               llm_model = NULL,
-                               llm_provider_args = list(),
-                               llm_generation_params = list(temperature = 0.3, maxOutputTokens = 4096),
-                               output_file = "auto_stat_report.html",
-                               include_full_data = TRUE, max_rows = 50, max_cols = 20,
-                               output_dir = NULL) {
+                      llm_provider = NULL,
+                      llm_model = NULL,
+                      llm_provider_args = list(),
+                      llm_generation_params = list(temperature = 0.3, maxOutputTokens = 4096),
+                      output_file = "auto_stat_report.html",
+                      include_full_data = TRUE, max_rows = 50, max_cols = 20,
+                      output_dir = NULL) {
 
   # First, try to detect provider from model if provider is not specified but model is
   if (is.null(llm_provider) && !is.null(llm_model)) {
@@ -117,7 +117,8 @@ auto_stat <- function(data, question, api_key,
     "   - ONE diagnostic visualization that addresses a critical model assumption\n",
     "   - ONE visualization showing effect sizes or coefficient estimates with uncertainty\n",
     "   - IF needed: ONE additional visualization showing interactions or complex patterns\n",
-    "   For each visualization, clearly explain what specific insight it is expected to provide."
+    "   For each visualization, clearly explain what specific insight it is expected to provide.\n\n",
+    "Start your response directly with the analysis plan without any introductory phrases."
   )
 
   analysis_plan <- send_to_llm(connection, plan_prompt,
@@ -305,30 +306,47 @@ auto_stat <- function(data, question, api_key,
   })
 
   interpret_prompt <- paste0(
-    "You are an expert statistician. Your task is to interpret the following analysis results in a formal, objective, and professional tone, suitable for a technical audience (e.g., researchers, data analysts).\n\n",
+    "You are an expert statistician writing the interpretation section for a professional statistical analysis report. ",
+    "Your audience consists of researchers, data analysts, and decision-makers who require clear, accurate, and actionable insights.\n\n",
     "Research Question: ", question, "\n\n",
     "Analysis Plan Overview:\n", analysis_plan, "\n\n",
-    "Analysis Results (this includes statistical outputs and detailed textual descriptions of any visualizations):\n\n", summary_text, "\n\n",
-    "Please provide a thorough interpretation of the findings. Critically evaluate the results. Do not just list numbers; explain what they mean in the context of the research question. Ensure the interpretation flows logically and forms a cohesive narrative.\n\n",
-    "Structure your interpretation with the following sections (use markdown bold for headings):\n",
-    "1.  **Executive Summary**: A brief overview of the main findings and conclusions related to the research question.\n",
-    "2.  **Key Findings from Visualizations**: Describe the primary insights derived from each significant plot (based on their textual descriptions provided in the results).\n",
-    "3.  **Statistical Results**: Detail the outcomes of the statistical tests performed, including test statistics, p-values, and confidence intervals where appropriate.\n",
-    "4.  **Effect Sizes and Practical Significance**: Discuss the magnitude of observed effects and their real-world implications.\n",
-    "5.  **Limitations**: Acknowledge any limitations of the analysis (e.g., sample size, assumptions not fully met, scope of data, errors during code execution if any were reported in 'summary_text').\n",
-    "6.  **Conclusions**: Summarize the main conclusions drawn from the analysis, directly addressing the research question.\n",
-    "7.  **Recommendations (Optional)**: If appropriate, suggest areas for further research or actions based on the findings.\n\n",
-    "Be concise and avoid redundancy. Do not simply list p-values or repeat information already in the tables. Instead, synthesize key insights, emphasize effect sizes and practical significance, and provide a meaningful interpretation that adds value beyond what's visible in the tables and plots."
+    "Analysis Results (includes statistical outputs and detailed descriptions of visualizations):\n\n", summary_text, "\n\n",
+    "Write a professional interpretation that directly addresses the research question. Be precise, concise, and focus on the most important findings. ",
+    "Avoid unnecessary technical jargon while maintaining statistical rigor. Structure your response using these sections:\n\n",
+    "**Executive Summary**\n",
+    "Provide a 2-3 sentence summary that directly answers the research question with key quantitative findings.\n\n",
+    "**Key Findings from Visualizations**\n",
+    "Briefly describe the main insights from each important visualization, focusing on what they reveal about the relationships in the data.\n\n",
+    "**Statistical Results**\n",
+    "Report the most important statistical findings with appropriate context. Include effect sizes, confidence intervals, and p-values where relevant, but interpret their practical meaning.\n\n",
+    "**Effect Sizes and Practical Significance**\n",
+    "Discuss the magnitude of observed effects and their real-world implications. Distinguish between statistical and practical significance.\n\n",
+    "**Limitations**\n",
+    "Acknowledge key limitations that affect the interpretation of results, including methodological constraints and data quality issues.\n\n",
+    "**Conclusions**\n",
+    "Provide clear, evidence-based conclusions that directly address the research question.\n\n",
+    "**Recommendations**\n",
+    "Suggest concrete next steps for research or practical applications based on the findings.\n\n",
+    "Requirements:\n",
+    "- Start directly with the '**Executive Summary**' section - no introductory text\n",
+    "- Provide comprehensive coverage of all important findings - prioritize completeness and usefulness over brevity\n",
+    "- Focus on interpretation and implications, not just restating numbers\n",
+    "- Use clear, professional language appropriate for a technical audience\n",
+    "- Include specific quantitative findings to support conclusions\n",
+    "- Provide thorough analysis in each section as needed to fully address the research question\n",
+    "- Avoid hedging language unless uncertainty is genuinely warranted"
   )
   interpretation <- send_to_llm(connection, interpret_prompt, llm_params = llm_generation_params)
 
   cat("Generating report...\n")
+  # NEW VERSION:
   report_info <- generate_enhanced_report(
     data = data, question = question, analysis_plan = analysis_plan,
     executable_code = if(is.list(extracted_code)) paste(extracted_code, collapse="\n\n") else extracted_code,
     results = results, interpretation = interpretation,
-    output_file = file.path(output_dir, output_file), # Pass the path including output_dir
-    output_dir = output_dir # Pass the base output_dir directly
+    output_file = file.path(output_dir, output_file),
+    output_dir = output_dir,
+    llm_connection = connection  # Add this line
   )
 
   return(list(

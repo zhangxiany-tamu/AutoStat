@@ -2,7 +2,7 @@
 % Please edit documentation in R/report_utils.R
 \name{generate_simplified_report}
 \alias{generate_simplified_report}
-\title{Generate a simplified HTML report}
+\title{Generate a simplified HTML report with improved titles and comprehensive model handling}
 \usage{
 generate_simplified_report(
   data,
@@ -12,7 +12,8 @@ generate_simplified_report(
   results,
   processed_interpretation,
   output_dir,
-  filename = "analysis_report.html"
+  filename = "analysis_report.html",
+  llm_connection = NULL
 )
 }
 \arguments{
@@ -31,11 +32,13 @@ generate_simplified_report(
 \item{output_dir}{Directory where report and images should be saved (absolute path)}
 
 \item{filename}{Report filename (e.g., "analysis_report.html")}
+
+\item{llm_connection}{Optional LLM connection for generating better titles}
 }
 \value{
 Path to the generated report
 }
 \description{
-Generate a simplified HTML report
+Generate a simplified HTML report with improved titles and comprehensive model handling
 }
 \keyword{internal}

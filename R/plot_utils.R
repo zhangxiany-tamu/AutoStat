@@ -39,7 +39,7 @@ sanitize_filename <- function(input_string, replacement_char = "_") {
 #' @description
 #' Generates a meaningful title for a plot based on its content, aesthetics, and structure.
 #' It prioritizes existing titles in ggplot objects and attempts to infer appropriate titles
-#' for other plot types.
+#' for other plot types, including plotly objects.
 #'
 #' @param name Original plot name from results list (e.g., "block_1", "my_scatter")
 #' @param plot_obj The plot object to analyze
@@ -49,7 +49,60 @@ sanitize_filename <- function(input_string, replacement_char = "_") {
 #'
 #' @keywords internal
 generate_plot_title <- function(name, plot_obj, data = NULL) {
-  # 1. Prioritize existing title in ggplot objects
+  # 1. Handle plotly objects
+  if (inherits(plot_obj, "plotly")) {
+    # Try to extract title from plotly object
+    if (!is.null(plot_obj$x$layout$title$text) && nzchar(plot_obj$x$layout$title$text)) {
+      return(plot_obj$x$layout$title$text)
+    } else if (!is.null(plot_obj$x$layout$title) && is.character(plot_obj$x$layout$title) && nzchar(plot_obj$x$layout$title)) {
+      return(plot_obj$x$layout$title)
+    }
+
+    # Infer title from plotly data structure
+    plot_data <- plot_obj$x$data
+    if (length(plot_data) > 0 && !is.null(plot_data[[1]])) {
+      trace <- plot_data[[1]]
+      x_var <- if (!is.null(trace$name)) trace$name else "X"
+      y_var <- if (!is.null(plot_obj$x$layout$yaxis$title$text)) plot_obj$x$layout$yaxis$title$text else "Y"
+      z_var <- if (!is.null(plot_obj$x$layout$scene$zaxis$title$text)) plot_obj$x$layout$scene$zaxis$title$text else NULL
+
+      # Get axis labels
+      x_label <- if (!is.null(plot_obj$x$layout$xaxis$title$text)) plot_obj$x$layout$xaxis$title$text else
+        if (!is.null(plot_obj$x$layout$scene$xaxis$title$text)) plot_obj$x$layout$scene$xaxis$title$text else "X"
+      y_label <- if (!is.null(plot_obj$x$layout$yaxis$title$text)) plot_obj$x$layout$yaxis$title$text else
+        if (!is.null(plot_obj$x$layout$scene$yaxis$title$text)) plot_obj$x$layout$scene$yaxis$title$text else "Y"
+      z_label <- if (!is.null(plot_obj$x$layout$scene$zaxis$title$text)) plot_obj$x$layout$scene$zaxis$title$text else NULL
+
+      # Determine plot type and create appropriate title
+      if (!is.null(trace$type)) {
+        if (trace$type == "scatter3d" && !is.null(z_label)) {
+          return(paste("3D Scatter Plot:", z_label, "vs", x_label, "and", y_label))
+        } else if (trace$type %in% c("scatter", "scattergl")) {
+          return(paste("Scatter Plot:", y_label, "vs", x_label))
+        } else if (trace$type == "bar") {
+          return(paste("Bar Chart:", y_label, "by", x_label))
+        } else if (trace$type == "histogram") {
+          return(paste("Histogram of", x_label))
+        }
+      }
+
+      # Fallback for plotly
+      if (!is.null(z_label)) {
+        return(paste("3D Plot:", z_label, "vs", x_label, "and", y_label))
+      } else {
+        return(paste("Interactive Plot:", y_label, "vs", x_label))
+      }
+    }
+
+    # Final fallback for plotly
+    if (grepl("^block_\\d+$", name)) {
+      return("Interactive 3D Visualization")
+    } else {
+      return(paste("Interactive Plot:", tools::toTitleCase(gsub("_", " ", name))))
+    }
+  }
+
+  # 2. Prioritize existing title in ggplot objects
   if (inherits(plot_obj, "ggplot")) {
     if (!is.null(plot_obj$labels$title) && nzchar(plot_obj$labels$title)) {
       return(plot_obj$labels$title)
@@ -77,14 +130,16 @@ generate_plot_title <- function(name, plot_obj, data = NULL) {
     main_geom <- if (length(geom_types) > 0) gsub("^Geom", "", geom_types[1]) else "Plot"
 
     title_parts <- c()
-    if (main_geom == "Point" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Scatter Plot of", y_var, "vs.", x_var)
+    if (main_geom == "Point" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Scatter Plot of", y_var, "vs", x_var)
     else if (main_geom == "Bar" && !is.null(x_var)) title_parts <- c("Bar Chart of", x_var)
     else if (main_geom == "Col" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Bar Chart of", y_var, "by", x_var)
     else if (main_geom == "Histogram" && !is.null(x_var)) title_parts <- c("Histogram of", x_var)
     else if (main_geom == "Density" && !is.null(x_var)) title_parts <- c("Density Plot of", x_var)
     else if (main_geom == "Boxplot" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Boxplot of", y_var, "by", x_var)
-    else if (main_geom == "Line" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Line Plot of", y_var, "vs.", x_var)
-    else if (!is.null(x_var) && !is.null(y_var)) title_parts <- c(main_geom, "Plot of", y_var, "by", x_var)
+    else if (main_geom == "Line" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Line Plot of", y_var, "vs", x_var)
+    else if (main_geom == "Smooth" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Smoothed Trend of", y_var, "vs", x_var)
+    else if (main_geom == "Errorbar" && !is.null(x_var) && !is.null(y_var)) title_parts <- c("Error Bar Plot of", y_var, "by", x_var)
+    else if (!is.null(x_var) && !is.null(y_var)) title_parts <- c(main_geom, "Plot of", y_var, "vs", x_var)
     else if (!is.null(x_var)) title_parts <- c(main_geom, "Plot of", x_var)
     else title_parts <- c(tools::toTitleCase(gsub("_", " ", name))) # Fallback to original name
 
@@ -95,19 +150,38 @@ generate_plot_title <- function(name, plot_obj, data = NULL) {
     return(paste(title_parts, collapse = " "))
   }
 
-  # 2. For base R plots (or other types)
+  # 3. For base R plots (or other types)
   if (is.list(plot_obj) && "call" %in% names(plot_obj)) {
     call_str <- deparse(plot_obj$call)
     # Basic inference from call (can be expanded)
     if (grepl("hist\\(", call_str)) return(paste("Histogram from", name))
     if (grepl("boxplot\\(", call_str)) return(paste("Boxplot from", name))
+    if (grepl("barplot\\(", call_str)) return(paste("Bar Plot from", name))
     # Add more base plot inferences if needed
   }
 
-  # 3. Fallback: Clean up the original name from results list
+  # 4. Fallback: Clean up the original name from results list
+  # Special handling for block names to make them more descriptive
+  if (grepl("^block_\\d+$", name)) {
+    block_num <- gsub("^block_(\\d+)$", "\\1", name)
+    return(paste("Analysis Result", block_num))
+  }
+
+  # Regular name cleanup
   title <- gsub("[._]", " ", name)
   title <- gsub("([a-z])([A-Z])", "\\1 \\2", title) # Add space for camelCase
-  title <- paste0(toupper(substr(title, 1, 1)), substr(title, 2, nchar(title))) # Title Case
+
+  # Handle common plot naming patterns
+  if (grepl("scatter", title, ignore.case = TRUE)) title <- gsub("scatter", "Scatter Plot", title, ignore.case = TRUE)
+  if (grepl("histogram", title, ignore.case = TRUE)) title <- gsub("histogram", "Histogram", title, ignore.case = TRUE)
+  if (grepl("boxplot", title, ignore.case = TRUE)) title <- gsub("boxplot", "Boxplot", title, ignore.case = TRUE)
+  if (grepl("barplot", title, ignore.case = TRUE)) title <- gsub("barplot", "Bar Chart", title, ignore.case = TRUE)
+  if (grepl("residual", title, ignore.case = TRUE)) title <- gsub("residual", "Residual Plot", title, ignore.case = TRUE)
+  if (grepl("coefficient", title, ignore.case = TRUE)) title <- gsub("coefficient", "Coefficient Plot", title, ignore.case = TRUE)
+  if (grepl("diagnostic", title, ignore.case = TRUE)) title <- gsub("diagnostic", "Diagnostic Plot", title, ignore.case = TRUE)
+
+  # Capitalize first letter
+  title <- paste0(toupper(substr(title, 1, 1)), substr(title, 2, nchar(title)))
   return(title)
 }
 
@@ -175,7 +249,7 @@ generate_plot_signature <- function(plot_obj) {
 }
 
 
-#' Save plots to the output directory with improved duplicate detection.
+#' Save plots to the output directory with improved duplicate detection and plotly support.
 #'
 #' @param results List of analysis results from `execute_code`.
 #' @param output_dir Directory to save images in.
@@ -189,6 +263,7 @@ save_plots_to_output_dir <- function(results, output_dir, data = NULL) {
     # Fallback to a simpler non-digest signature if digest is not available
     generate_plot_signature_fallback <- function(plot_obj) {
       if(inherits(plot_obj, "ggplot")) return(paste(sapply(plot_obj$layers, function(l) class(l$geom)[1]), collapse="_"))
+      if(inherits(plot_obj, "plotly")) return("plotly_object")
       return(class(plot_obj)[1])
     }
     current_generate_plot_signature <- generate_plot_signature_fallback
@@ -204,6 +279,7 @@ save_plots_to_output_dir <- function(results, output_dir, data = NULL) {
 
     item <- results[[name]]
     if (inherits(item, "ggplot") || inherits(item, "trellis") || inherits(item, "recordedplot") ||
+        inherits(item, "plotly") ||
         (is.list(item) && "call" %in% names(item) && # Heuristic for base R plots from execute_code
          any(sapply(c("plot", "hist", "boxplot", "barplot"), function(p) grepl(p, deparse(item$call)[1]))))) {
       plot_object_names <- c(plot_object_names, name)
@@ -246,68 +322,151 @@ save_plots_to_output_dir <- function(results, output_dir, data = NULL) {
       }
       # Ensure filename uniqueness if multiple plots sanitize to the same name by appending a number
       proposed_filename_base <- file.path(output_dir, base_filename)
-      actual_filename_png <- paste0(proposed_filename_base, ".png")
-
-      # Simple uniqueness check by appending number if file exists (more robust needed for concurrent access)
-      counter <- 1
-      while(file.exists(actual_filename_png)) {
-        actual_filename_png <- paste0(proposed_filename_base, "_", counter, ".png")
-        counter <- counter + 1
-      }
-
-      # Relative filename for HTML report (basename)
-      relative_filename_png <- basename(actual_filename_png)
 
       tryCatch({
         if (inherits(plot_obj, "ggplot")) {
+          # Handle ggplot objects
+          actual_filename_png <- paste0(proposed_filename_base, ".png")
+
+          # Simple uniqueness check by appending number if file exists
+          counter <- 1
+          while(file.exists(actual_filename_png)) {
+            actual_filename_png <- paste0(proposed_filename_base, "_", counter, ".png")
+            counter <- counter + 1
+          }
+
+          relative_filename_png <- basename(actual_filename_png)
+
           # Add the generated title to the plot object itself before saving
           # This ensures the title is embedded in the plot if it was inferred
           plot_to_save <- plot_obj + ggplot2::labs(title = display_title) +
             ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
           ggplot2::ggsave(filename = actual_filename_png, plot = plot_to_save, width = 10, height = 7, dpi = 300)
-        } else if (inherits(plot_obj, "trellis")) {
-          png(actual_filename_png, width = 3000, height = 2100, res = 300)
-          print(plot_obj) # Trellis plots usually have titles handled internally or via main=
-          dev.off()
-        } else if (inherits(plot_obj, "recordedplot")) { # Base R plot
-          png(actual_filename_png, width = 3000, height = 2100, res = 300)
-          # It's good practice to set par(mar) before replaying for title space, but replayPlot should handle it.
-          # The title for base R plots is often part of the original plot call.
-          # If generate_plot_title inferred something different, we can add it.
-          replayPlot(plot_obj)
-          # Add title if it's not likely already there from the call (heuristic)
-          # if(!is.null(display_title) && !grepl(display_title, deparse(plot_obj$call %||% ""))) {
-          #    graphics::title(main = display_title)
-          # }
-          dev.off()
-        } else if (is.list(plot_obj) && "call" %in% names(plot_obj)) { # Another heuristic for base R plots
-          png(actual_filename_png, width = 3000, height = 2100, res = 300)
-          # This re-evaluates the plot call. This is generally okay if the environment is right.
-          # The `execute_code` function runs in a specific environment.
-          # For simplicity, we assume the plot object `plot_obj` is self-contained enough or `eval(plot_obj$call)` works.
-          # A safer way is if `execute_code` ensures recorded plots are always `recordedplot` objects.
-          # For now, let's assume `plot_obj` itself can be printed or replayed if it's a base plot.
-          # This part is tricky. `replayPlot` is for `recordedplot`.
-          # If it's just a list with a call, we might need to eval it.
-          # However, `execute_code` should ideally return `recordedplot` for base plots.
-          # Let's assume if it's not ggplot/trellis/recordedplot, it's an error or unhandled type for now.
-          warning(paste("Plot '", original_name, "' is of an unhandled list-call type for direct saving. Attempting to print it. Ensure base plots are captured as 'recordedplot'."))
-          print(plot_obj) # Generic print attempt
-          dev.off()
-        } else {
-          warning(paste("Plot '", original_name, "' is of an unrecognized type (", class(plot_obj)[1], ") and cannot be saved automatically."))
-          relative_filename_png <- NA # Mark as not saved
-        }
 
-        if (!is.na(relative_filename_png)) {
-          message(paste("Saved plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
-          # Store info for this new unique plot
+          message(paste("Saved ggplot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
           saved_plot_info_by_signature[[plot_signature]] <- list(
             final_filename = relative_filename_png,
             final_title = display_title
           )
           final_plot_files[[original_name]] <- relative_filename_png
           final_plot_titles[[original_name]] <- display_title
+
+        } else if (inherits(plot_obj, "plotly")) {
+          # Handle plotly objects - save as interactive HTML widget
+          if (!requireNamespace("htmlwidgets", quietly = TRUE)) {
+            warning("htmlwidgets package required to save plotly plots. Attempting to install...")
+            tryCatch({
+              install.packages("htmlwidgets", dependencies = TRUE, repos = 'https://cran.rstudio.com/')
+            }, error = function(e) {
+              warning("Failed to install htmlwidgets package: ", e$message)
+            })
+          }
+
+          if (requireNamespace("htmlwidgets", quietly = TRUE)) {
+            actual_filename_html <- paste0(proposed_filename_base, ".html")
+
+            # Simple uniqueness check by appending number if file exists
+            counter <- 1
+            while(file.exists(actual_filename_html)) {
+              actual_filename_html <- paste0(proposed_filename_base, "_", counter, ".html")
+              counter <- counter + 1
+            }
+
+            relative_filename_html <- basename(actual_filename_html)
+
+            # Save plotly as self-contained HTML widget
+            htmlwidgets::saveWidget(plot_obj, actual_filename_html, selfcontained = TRUE, title = display_title)
+
+            message(paste("Saved interactive plotly plot '", original_name, "' as '", relative_filename_html, "' with title '", display_title, "'", sep=""))
+            saved_plot_info_by_signature[[plot_signature]] <- list(
+              final_filename = relative_filename_html,
+              final_title = display_title
+            )
+            final_plot_files[[original_name]] <- relative_filename_html
+            final_plot_titles[[original_name]] <- display_title
+          } else {
+            warning(paste("Could not save plotly plot '", original_name, "' - htmlwidgets package not available"))
+            final_plot_files[[original_name]] <- NA
+            final_plot_titles[[original_name]] <- paste("Error saving plotly plot:", original_name)
+          }
+
+        } else if (inherits(plot_obj, "trellis")) {
+          # Handle trellis/lattice objects
+          actual_filename_png <- paste0(proposed_filename_base, ".png")
+
+          counter <- 1
+          while(file.exists(actual_filename_png)) {
+            actual_filename_png <- paste0(proposed_filename_base, "_", counter, ".png")
+            counter <- counter + 1
+          }
+
+          relative_filename_png <- basename(actual_filename_png)
+
+          png(actual_filename_png, width = 3000, height = 2100, res = 300)
+          print(plot_obj) # Trellis plots usually have titles handled internally or via main=
+          dev.off()
+
+          message(paste("Saved trellis plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
+          saved_plot_info_by_signature[[plot_signature]] <- list(
+            final_filename = relative_filename_png,
+            final_title = display_title
+          )
+          final_plot_files[[original_name]] <- relative_filename_png
+          final_plot_titles[[original_name]] <- display_title
+
+        } else if (inherits(plot_obj, "recordedplot")) {
+          # Handle base R recorded plots
+          actual_filename_png <- paste0(proposed_filename_base, ".png")
+
+          counter <- 1
+          while(file.exists(actual_filename_png)) {
+            actual_filename_png <- paste0(proposed_filename_base, "_", counter, ".png")
+            counter <- counter + 1
+          }
+
+          relative_filename_png <- basename(actual_filename_png)
+
+          png(actual_filename_png, width = 3000, height = 2100, res = 300)
+          replayPlot(plot_obj)
+          dev.off()
+
+          message(paste("Saved recorded plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
+          saved_plot_info_by_signature[[plot_signature]] <- list(
+            final_filename = relative_filename_png,
+            final_title = display_title
+          )
+          final_plot_files[[original_name]] <- relative_filename_png
+          final_plot_titles[[original_name]] <- display_title
+
+        } else if (is.list(plot_obj) && "call" %in% names(plot_obj)) {
+          # Handle other base R plots stored as lists with calls
+          actual_filename_png <- paste0(proposed_filename_base, ".png")
+
+          counter <- 1
+          while(file.exists(actual_filename_png)) {
+            actual_filename_png <- paste0(proposed_filename_base, "_", counter, ".png")
+            counter <- counter + 1
+          }
+
+          relative_filename_png <- basename(actual_filename_png)
+
+          png(actual_filename_png, width = 3000, height = 2100, res = 300)
+          warning(paste("Plot '", original_name, "' is of an unhandled list-call type for direct saving. Attempting to print it. Ensure base plots are captured as 'recordedplot'."))
+          print(plot_obj) # Generic print attempt
+          dev.off()
+
+          message(paste("Saved list-call plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
+          saved_plot_info_by_signature[[plot_signature]] <- list(
+            final_filename = relative_filename_png,
+            final_title = display_title
+          )
+          final_plot_files[[original_name]] <- relative_filename_png
+          final_plot_titles[[original_name]] <- display_title
+
+        } else {
+          warning(paste("Plot '", original_name, "' is of an unrecognized type (", class(plot_obj)[1], ") and cannot be saved automatically."))
+          final_plot_files[[original_name]] <- NA
+          final_plot_titles[[original_name]] <- paste("Error saving plot:", original_name)
         }
 
       }, error = function(e) {

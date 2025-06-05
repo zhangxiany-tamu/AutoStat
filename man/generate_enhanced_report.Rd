@@ -14,7 +14,8 @@ generate_enhanced_report(
   output_file = NULL,
   report_num = NULL,
   output_dir = "auto_stat_output",
-  report_filename = "analysis_report.html"
+  report_filename = "analysis_report.html",
+  llm_connection = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ generate_enhanced_report(
 \item{output_dir}{Base directory where the timestamped output folder will be created.}
 
 \item{report_filename}{Report filename (e.g., "analysis_report.html")}
+
+\item{llm_connection}{Optional LLM connection for generating better titles}
 }
 \value{
 A list containing:

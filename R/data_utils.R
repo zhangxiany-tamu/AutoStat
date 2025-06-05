@@ -378,4 +378,3 @@ summarize_results <- function(results, data) {
 
   return(paste(summary_text_parts, collapse = "\n"))
 }
-

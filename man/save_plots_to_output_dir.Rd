@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_utils.R
 \name{save_plots_to_output_dir}
 \alias{save_plots_to_output_dir}
-\title{Save plots to the output directory with improved duplicate detection.}
+\title{Save plots to the output directory with improved duplicate detection and plotly support.}
 \usage{
 save_plots_to_output_dir(results, output_dir, data = NULL)
 }
@@ -18,6 +18,6 @@ Updated results list with \code{plot_files} (mapping original plot name to final
 and \code{plot_titles} (mapping original plot name to final display title).
 }
 \description{
-Save plots to the output directory with improved duplicate detection.
+Save plots to the output directory with improved duplicate detection and plotly support.
 }
 \keyword{internal}

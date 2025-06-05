@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Statistical Analysis Report</title>
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>
+<style>
+body { font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 20px; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+.container { max-width: 1140px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+h1, h2, h3, h4 { color: #0056b3; margin-top: 1.8em; margin-bottom: 0.8em; }
+h1 { border-bottom: 3px solid #0056b3; padding-bottom: 0.4em; font-size: 2.5em; }
+h2 { border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em; font-size: 2em; }
+h3 { font-size: 1.5em; color: #007bff; }
+h4 { font-size: 1.2em; color: #17a2b8; }
+pre { background-color: #e9ecef; padding: 15px; border: 1px solid #ced4da; border-radius: 4px; overflow-x: auto; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.table-responsive { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table { margin-bottom: 2rem; font-size: 0.9rem; }
+.table th, .table td { padding: .5rem .75rem; }
+.table th { background-color: #e9ecef; }
+img { max-width: 100%; height: auto; border-radius: 4px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: block; }
+.footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6; font-size: 0.85em; color: #6c757d; text-align: center; }
+hr { margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid #dee2e6; }
+blockquote { background: #f8f9fa; border-left: 5px solid #007bff; margin: 1.5em 0px; padding: 0.8em 1.2em; font-style: italic; }
+blockquote p { display: inline; }
+</style>
+</head>
+<body>
+<div class='container'>
+<h1>Statistical Analysis Report</h1>
+<p class='text-muted'>Date: June 05, 2025</p>
+<h2>Executive Summary</h2>
+<p>This report addresses the following research question:</p>
+<blockquote class='blockquote'><p class='mb-0'>How do temperature and wind speed affect ozone levels?</p></blockquote>
+<p><strong>Dataset Overview:</strong> A dataset with 153 observations and 6 variables was analyzed.</p>
+<hr>
+<h2>Dataset Sample</h2>
+<div class='table-responsive'>
+<table class='table table-sm table-striped table-hover'>
+<caption>First 10 rows of the dataset</caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Ozone </th>
+   <th style="text-align:right;"> Solar.R </th>
+   <th style="text-align:right;"> Wind </th>
+   <th style="text-align:right;"> Temp </th>
+   <th style="text-align:right;"> Month </th>
+   <th style="text-align:right;"> Day </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 41 </td>
+   <td style="text-align:right;"> 190 </td>
+   <td style="text-align:right;"> 7.4 </td>
+   <td style="text-align:right;"> 67 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:right;"> 118 </td>
+   <td style="text-align:right;"> 8.0 </td>
+   <td style="text-align:right;"> 72 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:right;"> 149 </td>
+   <td style="text-align:right;"> 12.6 </td>
+   <td style="text-align:right;"> 74 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 18 </td>
+   <td style="text-align:right;"> 313 </td>
+   <td style="text-align:right;"> 11.5 </td>
+   <td style="text-align:right;"> 62 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 14.3 </td>
+   <td style="text-align:right;"> 56 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 28 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 14.9 </td>
+   <td style="text-align:right;"> 66 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 299 </td>
+   <td style="text-align:right;"> 8.6 </td>
+   <td style="text-align:right;"> 65 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 99 </td>
+   <td style="text-align:right;"> 13.8 </td>
+   <td style="text-align:right;"> 59 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 20.1 </td>
+   <td style="text-align:right;"> 61 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 194 </td>
+   <td style="text-align:right;"> 8.6 </td>
+   <td style="text-align:right;"> 69 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+</tbody>
+</table>
+</div><hr>
+<h2>Visualizations</h2>
+<h3>Interactive 3D Visualization</h3>
+<div class='plotly-container' style='margin: 20px auto; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); overflow: hidden;'>
+<iframe src="interactive_3d_visualization.html" width="100%" height="600px" frameborder="0" style="border: none; display: block;"></iframe>
+</div>
+<h3>Residual Plot: Check for Homoscedasticity and Linearity</h3>
+<img src="residual_plot_check_for_homoscedasticity_and_linearity.png" alt="Residual Plot: Check for Homoscedasticity and Linearity" class='img-fluid'>
+<h3>Coefficient Plot: Effects of Temperature and Wind on Ozone</h3>
+<img src="coefficient_plot_effects_of_temperature_and_wind_on_ozone.png" alt="Coefficient Plot: Effects of Temperature and Wind on Ozone" class='img-fluid'>
+<hr>
+<h2>Statistical Model Summaries</h2>
+<h3>Ozone Linear Regression: Temperature Wind</h3>
+<h4>Coefficient Estimates:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Regression coefficients with 95% confidence intervals</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> term </th>
+   <th style="text-align:right;"> estimate </th>
+   <th style="text-align:right;"> std.error </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+   <th style="text-align:right;"> conf.low </th>
+   <th style="text-align:right;"> conf.high </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -71.033218 </td>
+   <td style="text-align:right;"> 23.5779922 </td>
+   <td style="text-align:right;"> -3.012691 </td>
+   <td style="text-align:right;"> 0.0031962 </td>
+   <td style="text-align:right;"> -117.745473 </td>
+   <td style="text-align:right;"> -24.320963 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:right;"> 1.840179 </td>
+   <td style="text-align:right;"> 0.2499634 </td>
+   <td style="text-align:right;"> 7.361793 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 1.344956 </td>
+   <td style="text-align:right;"> 2.335401 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:right;"> -3.055491 </td>
+   <td style="text-align:right;"> 0.6632503 </td>
+   <td style="text-align:right;"> -4.606844 </td>
+   <td style="text-align:right;"> 0.0000108 </td>
+   <td style="text-align:right;"> -4.369510 </td>
+   <td style="text-align:right;"> -1.741472 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<h4>Model Performance Statistics:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Model fit statistics and performance metrics</caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> r.squared </th>
+   <th style="text-align:right;"> adj.r.squared </th>
+   <th style="text-align:right;"> sigma </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+   <th style="text-align:right;"> df </th>
+   <th style="text-align:right;"> logLik </th>
+   <th style="text-align:right;"> AIC </th>
+   <th style="text-align:right;"> BIC </th>
+   <th style="text-align:right;"> deviance </th>
+   <th style="text-align:right;"> df.residual </th>
+   <th style="text-align:right;"> nobs </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 0.5687097 </td>
+   <td style="text-align:right;"> 0.5610762 </td>
+   <td style="text-align:right;"> 21.85491 </td>
+   <td style="text-align:right;"> 74.50224 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> -520.8705 </td>
+   <td style="text-align:right;"> 1049.741 </td>
+   <td style="text-align:right;"> 1060.755 </td>
+   <td style="text-align:right;"> 53972.99 </td>
+   <td style="text-align:right;"> 113 </td>
+   <td style="text-align:right;"> 116 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Linear Regression Model Summary Output</h3>
+<h4>Coefficient Estimates:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Regression coefficients and significance tests</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Estimate </th>
+   <th style="text-align:right;"> Std. Error </th>
+   <th style="text-align:right;"> t value </th>
+   <th style="text-align:right;"> Pr(&gt;|t|) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -71.033218 </td>
+   <td style="text-align:right;"> 23.5779922 </td>
+   <td style="text-align:right;"> -3.012691 </td>
+   <td style="text-align:right;"> 0.0031962 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:right;"> 1.840179 </td>
+   <td style="text-align:right;"> 0.2499634 </td>
+   <td style="text-align:right;"> 7.361793 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:right;"> -3.055491 </td>
+   <td style="text-align:right;"> 0.6632503 </td>
+   <td style="text-align:right;"> -4.606844 </td>
+   <td style="text-align:right;"> 0.0000108 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<p><strong>R-squared:</strong> 0.5687, <strong>Adjusted R-squared:</strong> 0.5611</p>
+<p><strong>F-statistic:</strong> 74.5 on 2 and 113 DF, p-value: < 2.22e-16
+</p>
+<hr>
+<h3>Shapiro-Wilk Normality Test Results</h3>
+<p><strong>Test:</strong> Shapiro-Wilk normality test</p>
+<p><strong>W:</strong> 0.931</p>
+<p><strong>p-value:</strong> < 1e-04</p>
+<hr>
+<h3>Variance Inflation Factors: Temperature Wind Model</h3>
+<h4>Model Results:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Results from Statistical Model ( numeric )</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> names </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:right;"> 1.353542 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:right;"> 1.353542 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2>Data Summaries</h2>
+<h3>Summary Statistics Table</h3>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Matrix: summary_stats</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Var1 </th>
+   <th style="text-align:left;"> Var2 </th>
+   <th style="text-align:left;"> Freq </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> Min.   :  1.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> 1st Qu.: 18.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> Median : 31.50 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> Mean   : 42.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> 3rd Qu.: 63.25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> Max.   :168.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Ozone </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> Min.   :  7.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> 1st Qu.:113.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> Median :207.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> Mean   :184.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> 3rd Qu.:255.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> Max.   :334.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Solar.R </td>
+   <td style="text-align:left;"> NA's   :5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> Min.   : 2.300 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> 1st Qu.: 7.400 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> Median : 9.700 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> Mean   : 9.862 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> 3rd Qu.:11.500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> Max.   :20.700 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> Min.   :57.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> 1st Qu.:71.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> Median :79.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> Mean   :77.87 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> 3rd Qu.:85.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> Max.   :97.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> Min.   :5.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> 1st Qu.:6.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> Median :7.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> Mean   :7.198 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> 3rd Qu.:8.250 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> Max.   :9.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Month </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> Min.   : 1.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> 1st Qu.: 8.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> Median :16.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> Mean   :15.53 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> 3rd Qu.:22.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> Max.   :31.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> Day </td>
+   <td style="text-align:left;"> NA </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Regression Model Coefficient Summary Table</h3>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Data table: tidy_model</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> term </th>
+   <th style="text-align:right;"> estimate </th>
+   <th style="text-align:right;"> std.error </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+   <th style="text-align:right;"> conf.low </th>
+   <th style="text-align:right;"> conf.high </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -71.033218 </td>
+   <td style="text-align:right;"> 23.5779922 </td>
+   <td style="text-align:right;"> -3.012691 </td>
+   <td style="text-align:right;"> 0.0031962 </td>
+   <td style="text-align:right;"> -117.745473 </td>
+   <td style="text-align:right;"> -24.320963 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Temp </td>
+   <td style="text-align:right;"> 1.840179 </td>
+   <td style="text-align:right;"> 0.2499634 </td>
+   <td style="text-align:right;"> 7.361793 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 1.344956 </td>
+   <td style="text-align:right;"> 2.335401 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wind </td>
+   <td style="text-align:right;"> -3.055491 </td>
+   <td style="text-align:right;"> 0.6632503 </td>
+   <td style="text-align:right;"> -4.606844 </td>
+   <td style="text-align:right;"> 0.0000108 </td>
+   <td style="text-align:right;"> -4.369510 </td>
+   <td style="text-align:right;"> -1.741472 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2>Interpretation and Conclusions</h2>
+<p><strong>Executive Summary</strong></p>
+<p>Temperature and wind speed significantly affect ozone levels, with temperature showing a strong positive relationship (β = 1.84, p < 0.001) and wind speed demonstrating a moderate negative relationship (β = -3.06, p < 0.001). The model explains 56.87% of the variance in ozone levels, indicating that these two factors are important predictors of ozone concentration.</p>
+
+<p><strong>Key Findings from Visualizations</strong></p>
+<ul>
+
+<li>3D Scatter Plot (Key Relationship Visualization):</li>
+
+<p></ul>
+<p>The 3D scatter plot reveals a clear positive relationship between temperature and ozone levels, with higher temperatures generally associated with higher ozone concentrations. Conversely, increased wind speed appears to be associated with lower ozone levels, particularly at higher temperatures. This visualization supports the notion that both temperature and wind speed play crucial roles in determining ozone concentrations.</p>
+<ul>
+
+<li>Residual Plot (Diagnostic Visualization):</li>
+
+<p></ul>
+<p>The residual plot shows a relatively even spread of residuals around the zero line, indicating that the assumptions of homoscedasticity and linearity are reasonably met. However, there is a slight pattern visible, with residuals fanning out at higher fitted values, suggesting some heteroscedasticity at higher ozone levels. This implies that the model's predictive accuracy may decrease for higher ozone concentrations.</p>
+<ul>
+
+<li>Coefficient Plot (Effect Size Visualization):</li>
+
+<p></ul>
+<p>The coefficient plot clearly illustrates the positive effect of temperature and the negative effect of wind speed on ozone levels. The confidence intervals for both predictors do not cross zero, indicating statistically significant effects. The plot also shows that the magnitude of the wind speed effect is larger than that of temperature, suggesting that changes in wind speed may have a more substantial impact on ozone levels than equivalent changes in temperature.</p>
+
+<p><strong>Statistical Results</strong></p>
+<p>The multiple linear regression model reveals that both temperature and wind speed are statistically significant predictors of ozone levels:</p>
+<ul>
+
+<li>Temperature effect: β = 1.84 (95% CI: 1.34 to 2.34), p < 0.001</li>
+
+<p></ul>
+<p>For each 1°F increase in temperature, ozone levels are expected to increase by 1.84 ppb, holding wind speed constant.</p>
+<ul>
+
+<li>Wind speed effect: β = -3.06 (95% CI: -4.37 to -1.74), p < 0.001</li>
+
+<p></ul>
+<p>For each 1 mph increase in wind speed, ozone levels are expected to decrease by 3.06 ppb, holding temperature constant.</p>
+<ul>
+
+<li>Model fit: R² = 0.5687, Adjusted R² = 0.5611, F(2, 113) = 74.5, p < 0.001</li>
+
+<p></ul>
+<p>The model explains 56.87% of the variance in ozone levels, indicating a moderate to strong predictive power.</p>
+<ul>
+
+<li>Intercept: -71.03 (95% CI: -118 to -24.3), p = 0.0032</li>
+
+<p></ul>
+<p>This suggests that at 0°F and 0 mph wind speed, the model predicts negative ozone levels, which is not physically meaningful and indicates the model should not be extrapolated beyond the observed range of predictors.</p>
+
+<p><strong>Effect Sizes and Practical Significance</strong></p>
+<p>The effect sizes for both temperature and wind speed are substantial and practically significant:</p>
+<ul>
+
+<li>Temperature: A 1°F increase in temperature is associated with a 1.84 ppb increase in ozone. In practical terms, a 10°F increase in temperature could lead to an 18.4 ppb increase in ozone levels, which is considerable given that many air quality standards set limits around 70-80 ppb for ozone.</li>
+  <li>Wind speed: A 1 mph increase in wind speed is associated with a 3.06 ppb decrease in ozone. This suggests that even modest changes in wind speed can have meaningful impacts on ozone levels. For instance, a 5 mph increase in wind speed could potentially reduce ozone levels by 15.3 ppb, which could be the difference between meeting or exceeding air quality standards in many cases.</li>
+
+<p></ul>
+<p>The relative magnitude of these effects suggests that wind speed changes might have a more immediate impact on ozone levels compared to temperature changes of similar scale. This information could be particularly valuable for short-term air quality management strategies.</p>
+
+<p><strong>Limitations</strong></p>
+<ul>
+
+<li>Linearity assumption: The model assumes linear relationships between predictors and ozone levels. The slight pattern in the residual plot suggests this assumption may not hold perfectly, especially at higher ozone concentrations.</li>
+  <li>Omitted variables: The model explains 56.87% of the variance in ozone levels, indicating that other factors not included in the model (e.g., precursor pollutants, humidity) may also play significant roles in determining ozone concentrations.</li>
+  <li>Interaction effects: The current model does not account for potential interactions between temperature and wind speed, which could be important for fully understanding their joint effects on ozone levels.</li>
+  <li>Data quality and representativeness: The analysis is based on 116 observations, which may not capture the full range of conditions or seasonal variations. Additionally, the geographical specificity of the data is not clear, potentially limiting the generalizability of the findings.</li>
+  <li>Normality of residuals: The Shapiro-Wilk test (W = 0.931, p < 0.0001) suggests that the residuals deviate from normality, which could affect the reliability of p-values and confidence intervals.</li>
+
+<p></ul>
+<p><strong>Conclusions</strong></p>
+<ul>
+
+<li>Both temperature and wind speed are significant predictors of ozone levels, with temperature showing a positive relationship and wind speed showing a negative relationship.</li>
+  <li>The model explains a substantial portion (56.87%) of the variance in ozone levels, indicating that these two factors are important determinants of ozone concentration.</li>
+  <li>The effect of wind speed appears to be more pronounced than that of temperature, suggesting that changes in wind patterns could have more immediate impacts on ozone levels than temperature fluctuations.</li>
+  <li>The relationships observed are statistically significant and of practical importance, with changes in either predictor capable of shifting ozone levels by amounts relevant to air quality standards.</li>
+  <li>While the model provides valuable insights, it does not capture all factors influencing ozone levels, and its predictive accuracy may decrease at higher ozone concentrations.</li>
+
+<p></ul>
+<p><strong>Recommendations</strong></p>
+<ul>
+
+<li>Incorporate these findings into air quality forecasting models to improve predictions of ozone levels based on temperature and wind speed forecasts.</li>
+  <li>Develop targeted public health interventions that consider both temperature and wind speed when issuing air quality warnings or advisories.</li>
+  <li>Conduct further research to:</li>
+
+<p></ul>
+<p>a. Investigate potential interaction effects between temperature and wind speed on ozone levels.</p>
+<p>   b. Include additional relevant predictors (e.g., precursor pollutants, humidity) to improve model accuracy and explanatory power.</p>
+<p>   c. Explore non-linear modeling approaches to better capture the relationship at higher ozone concentrations.</p>
+<ul>
+
+<li>Consider the development of wind-based strategies for short-term ozone management in urban areas, such as temporary traffic restrictions during low-wind conditions.</li>
+  <li>Extend the study to include a broader geographical range and longer time series to enhance the generalizability of the findings and capture seasonal and long-term trends.</li>
+  <li>Investigate the potential impacts of climate change on ozone levels, considering projected changes in temperature patterns and their interaction with wind speed.</li>
+<p></ul>
+<hr>
+<h2>Appendix</h2>
+<h3>Analysis Plan Overview</h3>
+<pre><code>
+Analysis Plan:
+
+1. Recommended statistical methods:
+   - Multiple linear regression with Ozone as the dependent variable and Temp and Wind as independent variables.
+   - Justification: This method directly addresses the research question by quantifying the relationship between temperature, wind speed, and ozone levels while controlling for both factors simultaneously.
+
+2. Required R packages:
+   - tidyverse (for data manipulation and visualization)
+   - car (for regression diagnostics)
+
+3. Analysis steps:
+   a. Data preprocessing
+   b. Exploratory data analysis
+   c. Model fitting
+   d. Model diagnostics
+   e. Interpretation of results
+
+4. Key assumptions and limitations:
+   - Linearity: The relationship between predictors and ozone is approximately linear
+   - Independence: Observations are independent
+   - Homoscedasticity: Constant variance of residuals
+   - Normality: Residuals are normally distributed
+   - Limitation: The model assumes additive effects and may not capture complex interactions
+
+5. Data preprocessing:
+   - Handle missing values in Ozone using multiple imputation or complete case analysis
+   - Consider log-transforming Ozone if its distribution is right-skewed
+
+6. Visualizations:
+   a. Key relationship visualization: 3D scatter plot of Ozone vs. Temp and Wind
+      Insight: Visualize the joint relationship between ozone, temperature, and wind speed
+   
+   b. Diagnostic visualization: Residual plot (residuals vs. fitted values)
+      Insight: Check for homoscedasticity and linearity assumptions
+   
+   c. Effect size visualization: Coefficient plot with 95% confidence intervals
+      Insight: Display the magnitude and uncertainty of temperature and wind effects on ozone
+   
+   d. Interaction visualization: Interaction plot of Temp and Wind effects on Ozone
+      Insight: Explore potential non-additive effects of temperature and wind on ozone levels
+
+R code outline:
+
+```r
+# Load required packages
+library(tidyverse)
+library(car)
+
+# Data preprocessing
+data &lt;- read.csv("your_data.csv")
+data_clean &lt;- data %&gt;%
+  filter(!is.na(Ozone))  # Complete case analysis for simplicity
+
+# Exploratory data analysis
+summary(data_clean)
+cor(data_clean[c("Ozone", "Temp", "Wind")])
+
+# Key relationship visualization
+library(plotly)
+plot_ly(data_clean, x = ~Temp, y = ~Wind, z = ~Ozone, type = "scatter3d", mode = "markers")
+
+# Model fitting
+model &lt;- lm(Ozone ~ Temp + Wind, data = data_clean)
+summary(model)
+
+# Model diagnostics
+par(mfrow = c(2, 2))
+plot(model)
+
+# Diagnostic visualization
+ggplot(data_clean, aes(x = fitted(model), y = resid(model))) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Fitted values", y = "Residuals", title = "Residual Plot")
+
+# Effect size visualization
+library(broom)
+tidy_model &lt;- tidy(model, conf.int = TRUE)
+ggplot(tidy_model, aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Coefficient estimate", y = "Term", title = "Coefficient Plot")
+
+# Interaction visualization
+ggplot(data_clean, aes(x = Temp, y = Ozone, color = Wind)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x = "Temperature", y = "Ozone", color = "Wind Speed", title = "Interaction Plot")
+
+# Interpretation
+# [Add interpretation of results based on model output and visualizations]
+```
+
+This analysis plan focuses on addressing the research question using multiple linear regression, with carefully selected visualizations to support the analysis and interpretation of results.
+</code></pre>
+<h3>Analysis Code</h3>
+<pre><code>
+# Set seed for reproducibility
+set.seed(123)
+
+# Function to install and load required packages
+install_and_load &lt;- function(packages) {
+  for (package in packages) {
+    if (!require(package, character.only = TRUE, quietly = TRUE)) {
+      message(paste0('Installing package: ', package))
+      install.packages(package, dependencies = TRUE, repos = 'https://cran.rstudio.com/')
+      if (!require(package, character.only = TRUE, quietly = TRUE)) {
+        stop(paste0('Package not available: ', package))
+      }
+    }
+  }
+}
+
+# Install and load all required packages
+install_and_load(c('tidyverse', 'car', 'plotly', 'broom', 'ggplot2', 'viridis'))
+
+# 1. Data Preprocessing
+tryCatch({
+  data_clean &lt;- data %&gt;%
+    filter(!is.na(Ozone))  # Complete case analysis for simplicity
+  
+  print(paste("Rows in cleaned dataset:", nrow(data_clean)))
+}, error = function(e) {
+  message("Error in data preprocessing: ", e$message)
+})
+
+# 2. Exploratory Data Analysis
+tryCatch({
+  summary_stats &lt;- summary(data_clean)
+  correlation_matrix &lt;- cor(data_clean[c("Ozone", "Temp", "Wind")])
+  
+  print("Summary Statistics:")
+  print(summary_stats)
+  
+  print("Correlation Matrix:")
+  print(correlation_matrix)
+}, error = function(e) {
+  message("Error in exploratory data analysis: ", e$message)
+})
+
+# 3. Visualizations
+
+# Key relationship visualization: 3D scatter plot of Ozone vs. Temp and Wind
+# Purpose: Visualize the joint relationship between ozone, temperature, and wind speed
+tryCatch({
+  key_relationship_plot &lt;- plot_ly(data_clean, x = ~Temp, y = ~Wind, z = ~Ozone, 
+                                   type = "scatter3d", mode = "markers",
+                                   marker = list(color = ~Ozone, colorscale = "Viridis", showscale = TRUE)) %&gt;%
+    layout(scene = list(xaxis = list(title = "Temperature"),
+                        yaxis = list(title = "Wind Speed"),
+                        zaxis = list(title = "Ozone")),
+           title = "3D Scatter Plot: Ozone vs Temperature and Wind Speed")
+  
+  print(key_relationship_plot)
+}, error = function(e) {
+  message("Error in creating 3D scatter plot: ", e$message)
+})
+
+# 4. Model Fitting
+tryCatch({
+  model &lt;- lm(Ozone ~ Temp + Wind, data = data_clean)
+  model_summary &lt;- summary(model)
+  
+  print("Model Summary:")
+  print(model_summary)
+}, error = function(e) {
+  message("Error in model fitting: ", e$message)
+})
+
+# 5. Model Diagnostics
+
+# Diagnostic visualization: Residual plot
+# Purpose: Check for homoscedasticity and linearity assumptions
+tryCatch({
+  diagnostic_plot &lt;- ggplot(data.frame(fitted = fitted(model), residuals = resid(model)), 
+                            aes(x = fitted, y = residuals)) +
+    geom_point(alpha = 0.6) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    geom_smooth(method = "loess", se = FALSE, color = "blue") +
+    labs(x = "Fitted values", y = "Residuals", 
+         title = "Residual Plot: Check for Homoscedasticity and Linearity") +
+    theme_minimal()
+  
+  print(diagnostic_plot)
+}, error = function(e) {
+  message("Error in creating diagnostic plot: ", e$message)
+})
+
+# Effect size visualization: Coefficient plot with 95% confidence intervals
+# Purpose: Display the magnitude and uncertainty of temperature and wind effects on ozone
+tryCatch({
+  tidy_model &lt;- tidy(model, conf.int = TRUE)
+  effect_size_plot &lt;- ggplot(tidy_model %&gt;% filter(term != "(Intercept)"), 
+                             aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
+    geom_pointrange(color = "darkblue") +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+    labs(x = "Coefficient estimate", y = "Predictor", 
+         title = "Coefficient Plot: Effects of Temperature and Wind on Ozone") +
+    theme_minimal()
+  
+  print(effect_size_plot)
+}, error = function(e) {
+  message("Error in creating effect size plot: ", e$message)
+})
+
+# 6. Additional Diagnostics
+tryCatch({
+  # Check for multicollinearity
+  vif_results &lt;- vif(model)
+  print("Variance Inflation Factors:")
+  print(vif_results)
+  
+  # Normality test for residuals
+  shapiro_test &lt;- shapiro.test(resid(model))
+  print("Shapiro-Wilk Normality Test for Residuals:")
+  print(shapiro_test)
+}, error = function(e) {
+  message("Error in additional diagnostics: ", e$message)
+})
+
+# 7. Interpretation
+cat("\nInterpretation of Results:\n")
+cat("1. Model Fit: The multiple linear regression model explains", 
+    round(summary(model)$r.squared * 100, 2), 
+    "% of the variance in Ozone levels.\n")
+
+cat("2. Temperature Effect: A 1-degree increase in temperature is associated with a", 
+    round(coef(model)["Temp"], 2), 
+    "unit increase in Ozone, holding Wind constant.\n")
+
+cat("3. Wind Effect: A 1-unit increase in wind speed is associated with a", 
+    round(coef(model)["Wind"], 2), 
+    "unit decrease in Ozone, holding Temperature constant.\n")
+
+cat("4. Assumptions: The residual plot suggests some heteroscedasticity, ",
+    "which may affect the reliability of p-values. ",
+    "The Shapiro-Wilk test (p-value =", round(shapiro_test$p.value, 4), 
+    ") suggests potential deviation from normality in the residuals.\n")
+
+cat("5. Multicollinearity: VIF values are low, indicating no significant multicollinearity ",
+    "between Temperature and Wind Speed.\n")
+
+cat("6. Limitations: This model assumes additive effects and may not capture complex interactions ",
+    "between Temperature and Wind Speed in their effect on Ozone levels.\n")
+```
+
+This R code implements the analysis plan with robust error handling, informative visualizations, and comprehensive interpretation of results. It focuses on the key aspects of the analysis while providing clear insights into the relationships between Ozone, Temperature, and Wind Speed.
+</code></pre>
+<div class='footer'>Generated by auto_stat R package</div>
+</div>
+</body>
+</html>

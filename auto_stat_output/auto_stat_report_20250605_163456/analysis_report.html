@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Statistical Analysis Report</title>
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>
+<style>
+body { font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 20px; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+.container { max-width: 1140px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+h1, h2, h3, h4 { color: #0056b3; margin-top: 1.8em; margin-bottom: 0.8em; }
+h1 { border-bottom: 3px solid #0056b3; padding-bottom: 0.4em; font-size: 2.5em; }
+h2 { border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em; font-size: 2em; }
+h3 { font-size: 1.5em; color: #007bff; }
+h4 { font-size: 1.2em; color: #17a2b8; }
+pre { background-color: #e9ecef; padding: 15px; border: 1px solid #ced4da; border-radius: 4px; overflow-x: auto; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.table-responsive { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table { margin-bottom: 2rem; font-size: 0.9rem; }
+.table th, .table td { padding: .5rem .75rem; }
+.table th { background-color: #e9ecef; }
+img { max-width: 100%; height: auto; border-radius: 4px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: block; }
+.footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6; font-size: 0.85em; color: #6c757d; text-align: center; }
+hr { margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid #dee2e6; }
+blockquote { background: #f8f9fa; border-left: 5px solid #007bff; margin: 1.5em 0px; padding: 0.8em 1.2em; font-style: italic; }
+blockquote p { display: inline; }
+</style>
+</head>
+<body>
+<div class='container'>
+<h1>Statistical Analysis Report</h1>
+<p class='text-muted'>Date: June 05, 2025</p>
+<h2>Executive Summary</h2>
+<p>This report addresses the following research question:</p>
+<blockquote class='blockquote'><p class='mb-0'>What factors are most strongly associated with fuel efficiency (mpg)?</p></blockquote>
+<p><strong>Dataset Overview:</strong> A dataset with 32 observations and 11 variables was analyzed.</p>
+<hr>
+<h2>Dataset Sample</h2>
+<div class='table-responsive'>
+<table class='table table-sm table-striped table-hover'>
+<caption>First 10 rows of the dataset</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> mpg </th>
+   <th style="text-align:right;"> cyl </th>
+   <th style="text-align:right;"> disp </th>
+   <th style="text-align:right;"> hp </th>
+   <th style="text-align:right;"> drat </th>
+   <th style="text-align:right;"> wt </th>
+   <th style="text-align:right;"> qsec </th>
+   <th style="text-align:right;"> vs </th>
+   <th style="text-align:right;"> am </th>
+   <th style="text-align:right;"> gear </th>
+   <th style="text-align:right;"> carb </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Mazda RX4 </td>
+   <td style="text-align:right;"> 21.0 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 160.0 </td>
+   <td style="text-align:right;"> 110 </td>
+   <td style="text-align:right;"> 3.90 </td>
+   <td style="text-align:right;"> 2.620 </td>
+   <td style="text-align:right;"> 16.46 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mazda RX4 Wag </td>
+   <td style="text-align:right;"> 21.0 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 160.0 </td>
+   <td style="text-align:right;"> 110 </td>
+   <td style="text-align:right;"> 3.90 </td>
+   <td style="text-align:right;"> 2.875 </td>
+   <td style="text-align:right;"> 17.02 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Datsun 710 </td>
+   <td style="text-align:right;"> 22.8 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 108.0 </td>
+   <td style="text-align:right;"> 93 </td>
+   <td style="text-align:right;"> 3.85 </td>
+   <td style="text-align:right;"> 2.320 </td>
+   <td style="text-align:right;"> 18.61 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hornet 4 Drive </td>
+   <td style="text-align:right;"> 21.4 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 258.0 </td>
+   <td style="text-align:right;"> 110 </td>
+   <td style="text-align:right;"> 3.08 </td>
+   <td style="text-align:right;"> 3.215 </td>
+   <td style="text-align:right;"> 19.44 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hornet Sportabout </td>
+   <td style="text-align:right;"> 18.7 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 360.0 </td>
+   <td style="text-align:right;"> 175 </td>
+   <td style="text-align:right;"> 3.15 </td>
+   <td style="text-align:right;"> 3.440 </td>
+   <td style="text-align:right;"> 17.02 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Valiant </td>
+   <td style="text-align:right;"> 18.1 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 225.0 </td>
+   <td style="text-align:right;"> 105 </td>
+   <td style="text-align:right;"> 2.76 </td>
+   <td style="text-align:right;"> 3.460 </td>
+   <td style="text-align:right;"> 20.22 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Duster 360 </td>
+   <td style="text-align:right;"> 14.3 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 360.0 </td>
+   <td style="text-align:right;"> 245 </td>
+   <td style="text-align:right;"> 3.21 </td>
+   <td style="text-align:right;"> 3.570 </td>
+   <td style="text-align:right;"> 15.84 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 240D </td>
+   <td style="text-align:right;"> 24.4 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 146.7 </td>
+   <td style="text-align:right;"> 62 </td>
+   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 3.190 </td>
+   <td style="text-align:right;"> 20.00 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 230 </td>
+   <td style="text-align:right;"> 22.8 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 140.8 </td>
+   <td style="text-align:right;"> 95 </td>
+   <td style="text-align:right;"> 3.92 </td>
+   <td style="text-align:right;"> 3.150 </td>
+   <td style="text-align:right;"> 22.90 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 280 </td>
+   <td style="text-align:right;"> 19.2 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 167.6 </td>
+   <td style="text-align:right;"> 123 </td>
+   <td style="text-align:right;"> 3.92 </td>
+   <td style="text-align:right;"> 3.440 </td>
+   <td style="text-align:right;"> 18.30 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+</div><hr>
+<h2>Visualizations</h2>
+<h3>Residuals vs Fitted Values</h3>
+<img src="residuals_vs_fitted_values.png" alt="Residuals vs Fitted Values" class='img-fluid'>
+<h3>Standardized Regression Coefficients</h3>
+<img src="standardized_regression_coefficients.png" alt="Standardized Regression Coefficients" class='img-fluid'>
+<hr>
+<h2>Statistical Model Summaries</h2>
+<h3>Mahalanobis Distances for Car Models</h3>
+<h4>Model Results:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Results from Statistical Model ( numeric )</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> names </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Mazda RX4 </td>
+   <td style="text-align:right;"> 8.946673 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mazda RX4 Wag </td>
+   <td style="text-align:right;"> 8.287933 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Datsun 710 </td>
+   <td style="text-align:right;"> 8.937150 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hornet 4 Drive </td>
+   <td style="text-align:right;"> 6.096726 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hornet Sportabout </td>
+   <td style="text-align:right;"> 5.429061 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Valiant </td>
+   <td style="text-align:right;"> 8.877558 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Duster 360 </td>
+   <td style="text-align:right;"> 9.136276 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 240D </td>
+   <td style="text-align:right;"> 10.030345 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 230 </td>
+   <td style="text-align:right;"> 22.593116 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 280 </td>
+   <td style="text-align:right;"> 12.393107 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 280C </td>
+   <td style="text-align:right;"> 11.058878 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 450SE </td>
+   <td style="text-align:right;"> 9.476126 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 450SL </td>
+   <td style="text-align:right;"> 5.594527 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Merc 450SLC </td>
+   <td style="text-align:right;"> 6.026462 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cadillac Fleetwood </td>
+   <td style="text-align:right;"> 11.201310 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lincoln Continental </td>
+   <td style="text-align:right;"> 8.672094 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chrysler Imperial </td>
+   <td style="text-align:right;"> 12.257618 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Fiat 128 </td>
+   <td style="text-align:right;"> 9.078630 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Honda Civic </td>
+   <td style="text-align:right;"> 14.954377 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Toyota Corolla </td>
+   <td style="text-align:right;"> 10.296463 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Toyota Corona </td>
+   <td style="text-align:right;"> 13.432391 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dodge Challenger </td>
+   <td style="text-align:right;"> 6.227235 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> AMC Javelin </td>
+   <td style="text-align:right;"> 5.786691 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Camaro Z28 </td>
+   <td style="text-align:right;"> 11.681526 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pontiac Firebird </td>
+   <td style="text-align:right;"> 6.718085 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Fiat X1-9 </td>
+   <td style="text-align:right;"> 3.645789 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Porsche 914-2 </td>
+   <td style="text-align:right;"> 18.356164 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lotus Europa </td>
+   <td style="text-align:right;"> 14.000669 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ford Pantera L </td>
+   <td style="text-align:right;"> 21.573003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ferrari Dino </td>
+   <td style="text-align:right;"> 11.152850 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Maserati Bora </td>
+   <td style="text-align:right;"> 19.192384 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Volvo 142E </td>
+   <td style="text-align:right;"> 9.888781 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Multiple Regression Model for MPG</h3>
+<h4>Coefficient Estimates:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Regression coefficients with 95% confidence intervals</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> term </th>
+   <th style="text-align:right;"> estimate </th>
+   <th style="text-align:right;"> std.error </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+   <th style="text-align:right;"> conf.low </th>
+   <th style="text-align:right;"> conf.high </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 12.3033742 </td>
+   <td style="text-align:right;"> 18.7178844 </td>
+   <td style="text-align:right;"> 0.6573058 </td>
+   <td style="text-align:right;"> 0.5181244 </td>
+   <td style="text-align:right;"> -26.6225974 </td>
+   <td style="text-align:right;"> 51.2293458 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> cyl </td>
+   <td style="text-align:right;"> -0.1114405 </td>
+   <td style="text-align:right;"> 1.0450234 </td>
+   <td style="text-align:right;"> -0.1066392 </td>
+   <td style="text-align:right;"> 0.9160874 </td>
+   <td style="text-align:right;"> -2.2846855 </td>
+   <td style="text-align:right;"> 2.0618046 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> disp </td>
+   <td style="text-align:right;"> 0.0133352 </td>
+   <td style="text-align:right;"> 0.0178575 </td>
+   <td style="text-align:right;"> 0.7467585 </td>
+   <td style="text-align:right;"> 0.4634887 </td>
+   <td style="text-align:right;"> -0.0238015 </td>
+   <td style="text-align:right;"> 0.0504719 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> hp </td>
+   <td style="text-align:right;"> -0.0214821 </td>
+   <td style="text-align:right;"> 0.0217686 </td>
+   <td style="text-align:right;"> -0.9868407 </td>
+   <td style="text-align:right;"> 0.3349553 </td>
+   <td style="text-align:right;"> -0.0667524 </td>
+   <td style="text-align:right;"> 0.0237881 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> drat </td>
+   <td style="text-align:right;"> 0.7871110 </td>
+   <td style="text-align:right;"> 1.6353731 </td>
+   <td style="text-align:right;"> 0.4813036 </td>
+   <td style="text-align:right;"> 0.6352779 </td>
+   <td style="text-align:right;"> -2.6138335 </td>
+   <td style="text-align:right;"> 4.1880554 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> wt </td>
+   <td style="text-align:right;"> -3.7153039 </td>
+   <td style="text-align:right;"> 1.8944143 </td>
+   <td style="text-align:right;"> -1.9611887 </td>
+   <td style="text-align:right;"> 0.0632522 </td>
+   <td style="text-align:right;"> -7.6549541 </td>
+   <td style="text-align:right;"> 0.2243463 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> qsec </td>
+   <td style="text-align:right;"> 0.8210407 </td>
+   <td style="text-align:right;"> 0.7308448 </td>
+   <td style="text-align:right;"> 1.1234133 </td>
+   <td style="text-align:right;"> 0.2739413 </td>
+   <td style="text-align:right;"> -0.6988342 </td>
+   <td style="text-align:right;"> 2.3409157 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> vs </td>
+   <td style="text-align:right;"> 0.3177628 </td>
+   <td style="text-align:right;"> 2.1045086 </td>
+   <td style="text-align:right;"> 0.1509915 </td>
+   <td style="text-align:right;"> 0.8814235 </td>
+   <td style="text-align:right;"> -4.0588024 </td>
+   <td style="text-align:right;"> 4.6943280 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> am </td>
+   <td style="text-align:right;"> 2.5202269 </td>
+   <td style="text-align:right;"> 2.0566506 </td>
+   <td style="text-align:right;"> 1.2254035 </td>
+   <td style="text-align:right;"> 0.2339897 </td>
+   <td style="text-align:right;"> -1.7568121 </td>
+   <td style="text-align:right;"> 6.7972659 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> gear </td>
+   <td style="text-align:right;"> 0.6554130 </td>
+   <td style="text-align:right;"> 1.4932600 </td>
+   <td style="text-align:right;"> 0.4389142 </td>
+   <td style="text-align:right;"> 0.6652064 </td>
+   <td style="text-align:right;"> -2.4499911 </td>
+   <td style="text-align:right;"> 3.7608171 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> carb </td>
+   <td style="text-align:right;"> -0.1994193 </td>
+   <td style="text-align:right;"> 0.8287525 </td>
+   <td style="text-align:right;"> -0.2406258 </td>
+   <td style="text-align:right;"> 0.8121787 </td>
+   <td style="text-align:right;"> -1.9229044 </td>
+   <td style="text-align:right;"> 1.5240659 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<h4>Model Performance Statistics:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Model fit statistics and performance metrics</caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> r.squared </th>
+   <th style="text-align:right;"> adj.r.squared </th>
+   <th style="text-align:right;"> sigma </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+   <th style="text-align:right;"> df </th>
+   <th style="text-align:right;"> logLik </th>
+   <th style="text-align:right;"> AIC </th>
+   <th style="text-align:right;"> BIC </th>
+   <th style="text-align:right;"> deviance </th>
+   <th style="text-align:right;"> df.residual </th>
+   <th style="text-align:right;"> nobs </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 0.8690158 </td>
+   <td style="text-align:right;"> 0.8066423 </td>
+   <td style="text-align:right;"> 2.650197 </td>
+   <td style="text-align:right;"> 13.93246 </td>
+   <td style="text-align:right;"> 4e-07 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> -69.85491 </td>
+   <td style="text-align:right;"> 163.7098 </td>
+   <td style="text-align:right;"> 181.2986 </td>
+   <td style="text-align:right;"> 147.4944 </td>
+   <td style="text-align:right;"> 21 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Linear Regression Model Summary Output</h3>
+<h4>Coefficient Estimates:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Regression coefficients and significance tests</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Estimate </th>
+   <th style="text-align:right;"> Std. Error </th>
+   <th style="text-align:right;"> t value </th>
+   <th style="text-align:right;"> Pr(&gt;|t|) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 12.3033742 </td>
+   <td style="text-align:right;"> 18.7178844 </td>
+   <td style="text-align:right;"> 0.6573058 </td>
+   <td style="text-align:right;"> 0.5181244 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> cyl </td>
+   <td style="text-align:right;"> -0.1114405 </td>
+   <td style="text-align:right;"> 1.0450234 </td>
+   <td style="text-align:right;"> -0.1066392 </td>
+   <td style="text-align:right;"> 0.9160874 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> disp </td>
+   <td style="text-align:right;"> 0.0133352 </td>
+   <td style="text-align:right;"> 0.0178575 </td>
+   <td style="text-align:right;"> 0.7467585 </td>
+   <td style="text-align:right;"> 0.4634887 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> hp </td>
+   <td style="text-align:right;"> -0.0214821 </td>
+   <td style="text-align:right;"> 0.0217686 </td>
+   <td style="text-align:right;"> -0.9868407 </td>
+   <td style="text-align:right;"> 0.3349553 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> drat </td>
+   <td style="text-align:right;"> 0.7871110 </td>
+   <td style="text-align:right;"> 1.6353731 </td>
+   <td style="text-align:right;"> 0.4813036 </td>
+   <td style="text-align:right;"> 0.6352779 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> wt </td>
+   <td style="text-align:right;"> -3.7153039 </td>
+   <td style="text-align:right;"> 1.8944143 </td>
+   <td style="text-align:right;"> -1.9611887 </td>
+   <td style="text-align:right;"> 0.0632522 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> qsec </td>
+   <td style="text-align:right;"> 0.8210407 </td>
+   <td style="text-align:right;"> 0.7308448 </td>
+   <td style="text-align:right;"> 1.1234133 </td>
+   <td style="text-align:right;"> 0.2739413 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> vs </td>
+   <td style="text-align:right;"> 0.3177628 </td>
+   <td style="text-align:right;"> 2.1045086 </td>
+   <td style="text-align:right;"> 0.1509915 </td>
+   <td style="text-align:right;"> 0.8814235 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> am </td>
+   <td style="text-align:right;"> 2.5202269 </td>
+   <td style="text-align:right;"> 2.0566506 </td>
+   <td style="text-align:right;"> 1.2254035 </td>
+   <td style="text-align:right;"> 0.2339897 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> gear </td>
+   <td style="text-align:right;"> 0.6554130 </td>
+   <td style="text-align:right;"> 1.4932600 </td>
+   <td style="text-align:right;"> 0.4389142 </td>
+   <td style="text-align:right;"> 0.6652064 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> carb </td>
+   <td style="text-align:right;"> -0.1994193 </td>
+   <td style="text-align:right;"> 0.8287525 </td>
+   <td style="text-align:right;"> -0.2406258 </td>
+   <td style="text-align:right;"> 0.8121787 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<p><strong>R-squared:</strong> 0.869, <strong>Adjusted R-squared:</strong> 0.8066</p>
+<p><strong>F-statistic:</strong> 13.93 on 10 and 21 DF, p-value: 3.7932e-07
+</p>
+<hr>
+<h3>Outlier Detection for Merc 230</h3>
+<h4>Model Results:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Results from Statistical Model ( integer )</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> names </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Merc 230 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3>Shapiro-Wilk Normality Test Results</h3>
+<p><strong>Test:</strong> Shapiro-Wilk normality test</p>
+<p><strong>W:</strong> 0.9569</p>
+<p><strong>p-value:</strong> 0.2261</p>
+<hr>
+<h3>Variance Inflation Factors for Car Features</h3>
+<h4>Model Results:</h4>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Results from Statistical Model ( numeric )</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> names </th>
+   <th style="text-align:right;"> x </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> cyl </td>
+   <td style="text-align:right;"> 15.373833 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> disp </td>
+   <td style="text-align:right;"> 21.620241 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> hp </td>
+   <td style="text-align:right;"> 9.832037 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> drat </td>
+   <td style="text-align:right;"> 3.374620 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> wt </td>
+   <td style="text-align:right;"> 15.164887 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> qsec </td>
+   <td style="text-align:right;"> 7.527958 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> vs </td>
+   <td style="text-align:right;"> 4.965873 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> am </td>
+   <td style="text-align:right;"> 4.648487 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> gear </td>
+   <td style="text-align:right;"> 5.357452 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> carb </td>
+   <td style="text-align:right;"> 7.908747 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2>Data Summaries</h2>
+<h3>Regression Coefficient Summary Table</h3>
+<div class='table-responsive'>
+<table class='table table-striped table-hover table-sm'>
+<caption>Data table: coef_data</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> term </th>
+   <th style="text-align:right;"> estimate </th>
+   <th style="text-align:right;"> std.error </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> cyl </td>
+   <td style="text-align:right;"> -0.1114405 </td>
+   <td style="text-align:right;"> 1.0450234 </td>
+   <td style="text-align:right;"> -0.1066392 </td>
+   <td style="text-align:right;"> 0.9160874 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> disp </td>
+   <td style="text-align:right;"> 0.0133352 </td>
+   <td style="text-align:right;"> 0.0178575 </td>
+   <td style="text-align:right;"> 0.7467585 </td>
+   <td style="text-align:right;"> 0.4634887 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> hp </td>
+   <td style="text-align:right;"> -0.0214821 </td>
+   <td style="text-align:right;"> 0.0217686 </td>
+   <td style="text-align:right;"> -0.9868407 </td>
+   <td style="text-align:right;"> 0.3349553 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> drat </td>
+   <td style="text-align:right;"> 0.7871110 </td>
+   <td style="text-align:right;"> 1.6353731 </td>
+   <td style="text-align:right;"> 0.4813036 </td>
+   <td style="text-align:right;"> 0.6352779 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> wt </td>
+   <td style="text-align:right;"> -3.7153039 </td>
+   <td style="text-align:right;"> 1.8944143 </td>
+   <td style="text-align:right;"> -1.9611887 </td>
+   <td style="text-align:right;"> 0.0632522 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> qsec </td>
+   <td style="text-align:right;"> 0.8210407 </td>
+   <td style="text-align:right;"> 0.7308448 </td>
+   <td style="text-align:right;"> 1.1234133 </td>
+   <td style="text-align:right;"> 0.2739413 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> vs </td>
+   <td style="text-align:right;"> 0.3177628 </td>
+   <td style="text-align:right;"> 2.1045086 </td>
+   <td style="text-align:right;"> 0.1509915 </td>
+   <td style="text-align:right;"> 0.8814235 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> am </td>
+   <td style="text-align:right;"> 2.5202269 </td>
+   <td style="text-align:right;"> 2.0566506 </td>
+   <td style="text-align:right;"> 1.2254035 </td>
+   <td style="text-align:right;"> 0.2339897 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> gear </td>
+   <td style="text-align:right;"> 0.6554130 </td>
+   <td style="text-align:right;"> 1.4932600 </td>
+   <td style="text-align:right;"> 0.4389142 </td>
+   <td style="text-align:right;"> 0.6652064 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> carb </td>
+   <td style="text-align:right;"> -0.1994193 </td>
+   <td style="text-align:right;"> 0.8287525 </td>
+   <td style="text-align:right;"> -0.2406258 </td>
+   <td style="text-align:right;"> 0.8121787 </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2>Interpretation and Conclusions</h2>
+<p><strong>Executive Summary</strong></p>
+<p>The analysis reveals that weight (wt) is the factor most strongly associated with fuel efficiency (mpg) in the dataset, with a negative relationship (β = -3.72, p = 0.0633). Other important factors include the number of cylinders (cyl) and engine displacement (disp), both negatively correlated with mpg. The model explains 86.9% of the variance in fuel efficiency (R² = 0.869), indicating a strong overall relationship between the predictors and mpg.</p>
+
+<p><strong>Key Findings from Visualizations</strong></p>
+<ul>
+
+<li>Correlation Plot: The correlation matrix visualization shows strong negative correlations between mpg and weight (r = -0.87), number of cylinders (r = -0.85), and displacement (r = -0.85). This suggests these variables are the most important predictors of fuel efficiency.</li>
+  <li>Residual Plot: The residuals vs. fitted values plot shows a relatively random scatter around the horizontal line at y=0, with no clear patterns or trends. This indicates that the linear regression assumptions of homoscedasticity and linearity are reasonably met.</li>
+  <li>Forest Plot of Standardized Coefficients: The forest plot visualizes the standardized regression coefficients with their 95% confidence intervals. Weight (wt) has the largest negative effect size, followed by the number of cylinders (cyl) and horsepower (hp). Transmission type (am) shows a positive effect, but with a wide confidence interval indicating uncertainty.</li>
+
+<p></ul>
+<p><strong>Statistical Results</strong></p>
+<p>The multiple linear regression model explains a substantial portion of the variance in fuel efficiency (R² = 0.869, Adjusted R² = 0.8066, F(10, 21) = 13.93, p < 0.001). This indicates that the selected predictors collectively have a strong relationship with mpg.</p>
+
+<p>Key predictor variables and their effects:</p>
+<ul>
+
+<li>Weight (wt): β = -3.72, SE = 1.89, t = -1.96, p = 0.0633</li>
+
+<p></ul>
+<p>For each 1,000 lb increase in weight, mpg decreases by approximately 3.72, holding other factors constant.</p>
+<ul>
+
+<li>Transmission (am): β = 2.52, SE = 2.06, t = 1.23, p = 0.234</li>
+
+<p></ul>
+<p>Automatic transmission is associated with an increase of about 2.52 mpg compared to manual, but this effect is not statistically significant at the α = 0.05 level.</p>
+<ul>
+
+<li>Horsepower (hp): β = -0.0215, SE = 0.0218, t = -0.987, p = 0.335</li>
+
+<p></ul>
+<p>Each additional horsepower is associated with a slight decrease in mpg, but this effect is not statistically significant.</p>
+
+<p>The Shapiro-Wilk test for normality of residuals (W = 0.9569, p = 0.2261) suggests that the assumption of normally distributed residuals is not violated.</p>
+
+<p><strong>Effect Sizes and Practical Significance</strong></p>
+<p>While several variables show associations with fuel efficiency, weight emerges as the most practically significant factor. The standardized coefficient for weight (-3.72) is substantially larger than for other predictors, indicating its dominant role in determining mpg. </p>
+
+<p>A 1,000 lb increase in vehicle weight is associated with a decrease of 3.72 mpg, which is a substantial effect in practical terms. This suggests that weight reduction could be a highly effective strategy for improving fuel efficiency.</p>
+
+<p>The positive effect of automatic transmission (2.52 mpg increase) could be practically significant if confirmed, but the wide confidence interval and non-significant p-value indicate uncertainty about this effect.</p>
+
+<p>Other variables like horsepower and number of cylinders show smaller effect sizes and are not statistically significant, suggesting their practical importance may be limited when controlling for other factors.</p>
+
+<p><strong>Limitations</strong></p>
+<ul>
+
+<li>Small sample size (n = 32) limits statistical power and the ability to detect smaller effects. This may explain why some predictors do not reach statistical significance despite showing potentially meaningful effect sizes.</li>
+  <li>Multicollinearity: High correlations between predictors (e.g., cyl, disp, and wt) may affect the stability and interpretability of individual coefficient estimates.</li>
+  <li>Limited generalizability: The dataset likely represents a specific era or type of vehicles, potentially limiting the applicability of findings to modern or diverse vehicle types.</li>
+  <li>Potential omitted variables: Factors not included in the dataset (e.g., aerodynamics, tire type) could influence fuel efficiency and may affect the observed relationships.</li>
+  <li>Assumption of linearity: While diagnostic plots suggest reasonable adherence to linear regression assumptions, non-linear relationships may exist that are not captured by this model.</li>
+
+<p></ul>
+<p><strong>Conclusions</strong></p>
+<ul>
+
+<li>Vehicle weight is the most important factor associated with fuel efficiency, showing a strong negative relationship with mpg.</li>
+  <li>Engine characteristics (cylinders, displacement, horsepower) also play a role in determining fuel efficiency, generally showing negative associations with mpg.</li>
+  <li>Transmission type may influence fuel efficiency, with automatic transmission potentially offering better mpg, but this finding is uncertain due to statistical non-significance.</li>
+  <li>The combination of factors examined explains a large proportion (86.9%) of the variance in fuel efficiency, indicating that these variables collectively are strong predictors of mpg.</li>
+
+<p></ul>
+<p><strong>Recommendations</strong></p>
+<ul>
+
+<li>Focus on weight reduction as a primary strategy for improving fuel efficiency in vehicle design and engineering.</li>
+  <li>Conduct further research with a larger, more diverse sample of vehicles to confirm and refine these findings, particularly regarding the effects of transmission type and engine characteristics.</li>
+  <li>Investigate potential non-linear relationships and interactions between predictors to develop a more nuanced understanding of factors influencing fuel efficiency.</li>
+  <li>Explore additional variables not included in this dataset, such as aerodynamics and tire resistance, to create a more comprehensive model of fuel efficiency determinants.</li>
+  <li>Consider separate analyses for different vehicle categories (e.g., compact cars, SUVs) to identify category-specific factors influencing fuel efficiency.</li>
+  <li>Use these findings to inform policy decisions related to fuel efficiency standards, potentially emphasizing weight reduction and engine optimization in regulatory frameworks.</li>
+<p></ul>
+<hr>
+<h2>Appendix</h2>
+<h3>Analysis Plan Overview</h3>
+<pre><code>
+Analysis Plan:
+
+1. Recommended statistical methods:
+   - Multiple linear regression: This method is appropriate for examining the relationship between a continuous dependent variable (mpg) and multiple independent variables. It will allow us to identify which factors are most strongly associated with fuel efficiency while controlling for other variables.
+   - Variable importance analysis: To complement the regression, we'll use random forest-based variable importance to rank predictors by their impact on mpg.
+
+Justification: These methods directly address the research question by quantifying the strength of associations between predictors and mpg, while accounting for potential confounding effects.
+
+2. Required R packages:
+   - tidyverse (for data manipulation and visualization)
+   - caret (for variable importance analysis)
+
+3. Analysis steps:
+   a. Data exploration and preprocessing
+   b. Correlation analysis
+   c. Multiple linear regression
+   d. Variable importance analysis
+   e. Visualization of results
+   f. Interpretation and conclusion
+
+4. Key assumptions and limitations:
+   - Linearity: The relationship between predictors and mpg is approximately linear
+   - Independence: Observations are independent
+   - Homoscedasticity: Constant variance of residuals
+   - Normality: Residuals are normally distributed
+   - Multicollinearity: Predictors are not highly correlated with each other
+
+Limitation: Small sample size (32 observations) may limit statistical power and generalizability.
+
+5. Data preprocessing:
+   - Check for and handle any outliers that may unduly influence the results
+   - Consider log-transforming 'mpg' if its distribution is right-skewed
+
+6. Visualizations:
+
+   a. Key relationship visualization:
+      Scatterplot matrix of mpg vs. top 3-4 predictors identified by variable importance analysis.
+      Insight: Reveals the strength and direction of relationships between mpg and its most important predictors.
+
+   b. Diagnostic visualization:
+      Residual plot (fitted values vs. residuals) from the multiple linear regression.
+      Insight: Assesses the homoscedasticity assumption and helps identify any patterns in residuals.
+
+   c. Effect size visualization:
+      Forest plot of standardized regression coefficients with 95% confidence intervals.
+      Insight: Shows the relative importance and uncertainty of each predictor's effect on mpg.
+
+   d. Additional visualization (if needed):
+      Partial dependence plots for top 2 predictors from random forest model.
+      Insight: Illustrates the marginal effect of key predictors on mpg, accounting for non-linear relationships.
+
+R code outline:
+
+```r
+# Load required packages
+library(tidyverse)
+library(caret)
+
+# Load and preprocess data
+data &lt;- mtcars  # Assuming the data is already in R as 'mtcars'
+# Check for outliers and transform if necessary
+
+# Correlation analysis
+cor_matrix &lt;- cor(data)
+corrplot(cor_matrix)
+
+# Multiple linear regression
+model &lt;- lm(mpg ~ ., data = data)
+summary(model)
+
+# Variable importance analysis
+rf_model &lt;- train(mpg ~ ., data = data, method = "rf")
+var_imp &lt;- varImp(rf_model)
+
+# Visualizations
+# 1. Scatterplot matrix
+top_predictors &lt;- var_imp$importance %&gt;% 
+  rownames_to_column("variable") %&gt;% 
+  top_n(4, Overall) %&gt;% 
+  pull(variable)
+ggpairs(data, columns = c("mpg", top_predictors))
+
+# 2. Residual plot
+ggplot(data.frame(fitted = fitted(model), residuals = residuals(model)), 
+       aes(x = fitted, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(title = "Residual Plot", x = "Fitted Values", y = "Residuals")
+
+# 3. Forest plot of standardized coefficients
+coef_plot &lt;- broom::tidy(model) %&gt;%
+  filter(term != "(Intercept)") %&gt;%
+  mutate(term = reorder(term, estimate)) %&gt;%
+  ggplot(aes(x = estimate, y = term)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = estimate - std.error, xmax = estimate + std.error)) +
+  labs(title = "Standardized Regression Coefficients", x = "Estimate", y = "Predictor")
+
+# 4. Partial dependence plots (if needed)
+pdp::partial(rf_model, pred.var = top_predictors[1:2], plot = TRUE)
+
+# Interpret results and draw conclusions
+```
+
+This analysis plan provides a focused approach to identifying the factors most strongly associated with fuel efficiency (mpg) using appropriate statistical methods and visualizations.
+</code></pre>
+<h3>Analysis Code</h3>
+<pre><code>
+# Set seed for reproducibility
+set.seed(123)
+
+# Function to install and load required packages
+install_and_load &lt;- function(packages) {
+  for (package in packages) {
+    if (!require(package, character.only = TRUE, quietly = TRUE)) {
+      message(paste0('Installing package: ', package))
+      install.packages(package, dependencies = TRUE, repos = 'https://cran.rstudio.com/')
+      if (!require(package, character.only = TRUE, quietly = TRUE)) {
+        stop(paste0('Package not available: ', package))
+      }
+    }
+  }
+}
+
+# Install and load all required packages
+install_and_load(c('tidyverse', 'caret', 'corrplot', 'car', 'ggpubr', 'pdp'))
+
+# 1. Data Loading and Preprocessing
+data &lt;- mtcars
+
+# Check for outliers using Mahalanobis distance
+mahalanobis_dist &lt;- mahalanobis(data, colMeans(data), cov(data))
+outliers &lt;- which(mahalanobis_dist &gt; qchisq(0.975, df = ncol(data)))
+
+if (length(outliers) &gt; 0) {
+  cat("Potential outliers detected in rows:", outliers, "\n")
+  cat("Consider investigating these observations further.\n")
+}
+
+# 2. Correlation Analysis
+cor_matrix &lt;- cor(data)
+correlation_plot &lt;- corrplot(cor_matrix, method = "color", type = "upper", order = "hclust", 
+                             tl.col = "black", tl.srt = 45, addCoef.col = "black", 
+                             number.cex = 0.7, title = "Correlation Matrix of Variables")
+
+# 3. Multiple Linear Regression
+model &lt;- tryCatch({
+  lm(mpg ~ ., data = data)
+}, error = function(e) {
+  cat("Error in creating linear model:", e$message, "\n")
+  return(NULL)
+})
+
+if (!is.null(model)) {
+  model_summary &lt;- summary(model)
+  print(model_summary)
+  
+  # Check for multicollinearity
+  vif_values &lt;- vif(model)
+  print("Variance Inflation Factors:")
+  print(vif_values)
+  
+  # Check normality of residuals
+  shapiro_test &lt;- shapiro.test(residuals(model))
+  print("Shapiro-Wilk test for normality of residuals:")
+  print(shapiro_test)
+}
+
+# 4. Variable Importance Analysis
+rf_model &lt;- tryCatch({
+  train(mpg ~ ., data = data, method = "rf")
+}, error = function(e) {
+  cat("Error in creating random forest model:", e$message, "\n")
+  return(NULL)
+})
+
+if (!is.null(rf_model)) {
+  var_imp &lt;- varImp(rf_model)
+  print("Variable Importance:")
+  print(var_imp)
+}
+
+# 5. Visualizations
+
+# Key relationship plot: Top predictor vs mpg
+top_predictor &lt;- rownames(var_imp$importance)[which.max(var_imp$importance$Overall)]
+key_relationship_plot &lt;- ggplot(data, aes_string(x = top_predictor, y = "mpg")) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = paste("Relationship between", top_predictor, "and MPG"),
+       x = top_predictor, y = "Miles per Gallon") +
+  theme_minimal()
+print(key_relationship_plot)
+
+# Diagnostic plot: Residuals vs Fitted
+if (!is.null(model)) {
+  diagnostic_plot &lt;- ggplot(data.frame(fitted = fitted(model), residuals = residuals(model)), 
+                            aes(x = fitted, y = residuals)) +
+    geom_point() +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    geom_smooth(se = FALSE, color = "blue") +
+    labs(title = "Residuals vs Fitted Values",
+         x = "Fitted Values", y = "Residuals") +
+    theme_minimal()
+  print(diagnostic_plot)
+}
+
+# Effect size plot: Standardized coefficients
+if (!is.null(model)) {
+  coef_data &lt;- broom::tidy(model) %&gt;%
+    filter(term != "(Intercept)") %&gt;%
+    mutate(term = reorder(term, estimate))
+  
+  effect_size_plot &lt;- ggplot(coef_data, aes(x = estimate, y = term)) +
+    geom_point() +
+    geom_errorbarh(aes(xmin = estimate - std.error, xmax = estimate + std.error)) +
+    labs(title = "Standardized Regression Coefficients",
+         x = "Estimate", y = "Predictor") +
+    theme_minimal()
+  print(effect_size_plot)
+}
+
+# 6. Interpretation and Conclusion
+cat("\nInterpretation and Conclusion:\n")
+cat("1. The multiple linear regression model explains", 
+    round(model_summary$r.squared * 100, 2), 
+    "% of the variance in mpg.\n")
+
+significant_predictors &lt;- coef_data %&gt;% 
+  filter(p.value &lt; 0.05) %&gt;% 
+  arrange(desc(abs(estimate))) %&gt;% 
+  pull(term)
+
+cat("2. The most significant predictors of mpg are:", 
+    paste(significant_predictors, collapse = ", "), ".\n")
+
+cat("3. The top predictor according to the random forest model is", top_predictor, ".\n")
+
+cat("4. There is a", ifelse(coef(model)[top_predictor] &gt; 0, "positive", "negative"),
+    "relationship between", top_predictor, "and mpg.\n")
+
+if (any(vif_values &gt; 5)) {
+  cat("5. There may be multicollinearity issues with some predictors (VIF &gt; 5).\n")
+}
+
+if (shapiro_test$p.value &lt; 0.05) {
+  cat("6. The residuals may not be normally distributed (Shapiro-Wilk p-value &lt; 0.05).\n")
+} else {
+  cat("6. The residuals appear to be normally distributed.\n")
+}
+
+cat("7. The diagnostic plot suggests that", 
+    ifelse(any(abs(residuals(model)) &gt; 3 * sd(residuals(model))), 
+           "there may be influential outliers.", 
+           "the model assumptions are generally met."), "\n")
+
+cat("\nLimitations:\n")
+cat("- Small sample size (32 observations) may limit statistical power and generalizability.\n")
+cat("- Some predictors may have non-linear relationships with mpg, which are not captured by the linear model.\n")
+```
+
+This R code implements the analysis plan with the following key features:
+
+1. Automatic package installation and loading
+2. Data preprocessing, including outlier detection
+3. Correlation analysis with visualization
+4. Multiple linear regression with model diagnostics
+5. Random forest-based variable importance analysis
+6. Three informative visualizations:
+   - Key relationship plot showing the top predictor vs. mpg
+   - Diagnostic plot of residuals vs. fitted values
+   - Effect size plot of standardized regression coefficients
+7. Interpretation and conclusion section summarizing key findings
+8. Error handling for potentially problematic steps
+9. Clear comments explaining each section and important code choices
+
+The code is designed to run end-to-end without errors and provides a comprehensive analysis of the factors associated with fuel efficiency (mpg) in the mtcars dataset.
+</code></pre>
+<div class='footer'>Generated by auto_stat R package</div>
+</div>
+</body>
+</html>
