@@ -1,5 +1,9 @@
 # AutoStat
 
+<div align="center">
+  <img src="images/autostat-logo.png" alt="AutoStat Logo" width="300"/>
+</div>
+
 ![autoStatR](https://img.shields.io/badge/R-AutoStat-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
