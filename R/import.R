@@ -1,7 +1,7 @@
 #' @importFrom grDevices png dev.off replayPlot
 NULL
 
-#' @importFrom stats sd
+#' @importFrom stats sd runif
 #' @importFrom utils capture.output head install.packages
 NULL
 

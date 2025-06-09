@@ -318,6 +318,11 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
     return(title)
   }
 
+  # List of known model classes that broom supports well
+  broom_supported_models <- c("lm", "glm", "gam", "nls", "survfit", "coxph",
+                              "glmnet", "randomForest", "svm", "rpart", "kmeans",
+                              "lme", "felm", "aov", "anova")
+
   if (length(results) > 0) {
     for (res_name_orig in names(results)) {
       # Skip plot file/title entries, image folder, and known internal fields
@@ -524,14 +529,10 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
           model_tables_html <- c(model_tables_html, paste0("<p><em>Error generating regression summary '", current_html_escape(display_res_name), "': ", current_html_escape(e$message), "</em></p>"))
         })
       }
-      # Handle other model objects that broom might support
+      # Handle other model objects that broom supports - UPDATED SECTION
       else if (has_broom && has_knitr &&
-               (inherits(res_item, c("nls", "survfit", "coxph", "glmnet", "randomForest", "svm", "rpart", "kmeans")) ||
-                # Check if broom can handle this object type
-                tryCatch({!is.null(broom::tidy(res_item))}, error = function(e) FALSE))) {
-
-        # Skip matrices and data frames from this section - they'll be handled later
-        if (inherits(res_item, c("matrix", "data.frame"))) next
+               any(sapply(broom_supported_models, function(x) inherits(res_item, x))) &&
+               !inherits(res_item, c("matrix", "data.frame", "numeric", "integer", "character", "logical"))) {
 
         # Determine model type for title
         model_type <- if (inherits(res_item, "nls")) "Nonlinear Least Squares Model"
@@ -581,6 +582,37 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
           model_tables_html <- c(model_tables_html, paste0("<p><em>Error generating table for model '", current_html_escape(display_res_name), "': ", current_html_escape(e$message), "</em></p>"))
         })
       }
+      # Handle VIF values (numeric vectors with names) - NEW SECTION
+      else if (is.numeric(res_item) && !is.null(names(res_item)) && length(res_item) <= 20 &&
+               (grepl("vif", res_name_orig, ignore.case = TRUE) ||
+                all(res_item >= 1, na.rm = TRUE))) {  # VIF values are always >= 1
+
+        title_prefix <- create_meaningful_title(display_res_name, res_item, data, "VIF Values", llm_connection)
+
+        tryCatch({
+          # Convert to data frame for better display
+          vif_df <- data.frame(
+            Variable = names(res_item),
+            VIF = round(res_item, 3),
+            stringsAsFactors = FALSE
+          )
+
+          data_summary_html <- c(data_summary_html,
+                                 paste0("<h3>", title_prefix, "</h3>"),
+                                 "<div class='table-responsive'>",
+                                 knitr::kable(vif_df, format = "html",
+                                              caption = "Variance Inflation Factor values",
+                                              table.attr = "class='table table-striped table-hover table-sm'"),
+                                 "</div>",
+                                 "<p><em>VIF > 5 suggests multicollinearity, VIF > 10 indicates serious multicollinearity</em></p>",
+                                 "<hr>")
+        }, error = function(e) {
+          data_summary_html <- c(data_summary_html,
+                                 paste0("<p><em>Error generating VIF table '",
+                                        current_html_escape(display_res_name), "': ",
+                                        current_html_escape(e$message), "</em></p>"))
+        })
+      }
       # Handle generic data.frame objects (tables, summaries, etc.)
       else if (is.data.frame(res_item) && has_knitr && nrow(res_item) <= 50 && ncol(res_item) <= 20) {
         # Determine if this is a statistical summary or just data
@@ -594,7 +626,6 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
           title_prefix <- create_meaningful_title(display_res_name, res_item, data, "Data Table", llm_connection)
           target_html <- data_summary_html
         }
-
         tryCatch({
           new_content <- c(paste0("<h3>", title_prefix, "</h3>"),
                            "<div class='table-responsive'>",
@@ -637,6 +668,13 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
         }, error = function(e) {
           data_summary_html <- c(data_summary_html, paste0("<p><em>Error generating matrix table '", current_html_escape(display_res_name), "': ", current_html_escape(e$message), "</em></p>"))
         })
+      }
+      # Handle other numeric vectors (not VIF) - UPDATED SECTION
+      else if (is.numeric(res_item) && length(res_item) <= 20 &&
+               !grepl("vif", res_name_orig, ignore.case = TRUE)) {
+        # Skip these - they're likely intermediate calculations or single values
+        # that don't need to be in the report
+        next
       }
     }
   }

@@ -121,10 +121,14 @@ auto_stat <- function(data, question, api_key,
     "Start your response directly with the analysis plan without any introductory phrases."
   )
 
-  analysis_plan <- send_to_llm(connection, plan_prompt,
-                               data = if(include_full_data && nrow(data) <= max_rows && ncol(data) <= max_cols) data else NULL,
-                               max_rows = max_rows, max_cols = max_cols,
-                               llm_params = llm_generation_params)
+  analysis_plan <- send_to_llm_with_retry(
+    connection,
+    plan_prompt,
+    max_retries = 3,
+    data = if(include_full_data && nrow(data) <= max_rows && ncol(data) <= max_cols) data else NULL,
+    max_rows = max_rows, max_cols = max_cols,
+    llm_params = llm_generation_params
+  )
 
   # Step 2: Generate executable R code
   code_prompt <- paste0(
