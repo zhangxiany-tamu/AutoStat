@@ -19,7 +19,7 @@ printed output, errors, and warnings for each block.
 \description{
 Executes R code safely and captures the results, including any objects created,
 printed output, errors, and warnings. This function is used internally by \code{auto_stat()}
-and \code{auto_stat_two_step()} but can also be used directly.
+but can also be used directly.
 }
 \examples{
 \dontrun{

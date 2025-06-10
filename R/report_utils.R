@@ -792,7 +792,7 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
 #'
 #' @description
 #' Generates a professional HTML report containing the analysis results, visualizations, code,
-#' and interpretation. This function is typically called by `auto_stat()` or `auto_stat_two_step()`
+#' and interpretation. This function is typically called by `auto_stat()`
 #' but can also be used directly to create custom reports.
 #'
 #' @param data Dataset analyzed

@@ -49,7 +49,7 @@ A list containing:
 }
 \description{
 Generates a professional HTML report containing the analysis results, visualizations, code,
-and interpretation. This function is typically called by \code{auto_stat()} or \code{auto_stat_two_step()}
+and interpretation. This function is typically called by \code{auto_stat()}
 but can also be used directly to create custom reports.
 }
 \examples{

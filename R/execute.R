@@ -3,7 +3,7 @@
 #' @description
 #' Executes R code safely and captures the results, including any objects created,
 #' printed output, errors, and warnings. This function is used internally by `auto_stat()`
-#' and `auto_stat_two_step()` but can also be used directly.
+#' but can also be used directly.
 #'
 #' @param data The dataset to be available in the execution environment.
 #' @param code_input A single string of R code, or a list/vector of R code strings (chunks).
