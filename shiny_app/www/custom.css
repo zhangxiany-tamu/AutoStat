@@ -1,0 +1,314 @@
+/* AutoStat Shiny App - Professional Styling */
+
+/* Color Palette */
+:root {
+  --primary-dark: #1d1d1f;
+  --primary-light: #fbfbfd;
+  --secondary-light: #f5f5f7;
+  --accent-blue: #0071e3;
+  --accent-hover: #0077ed;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --border-color: #d2d2d7;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
+}
+
+/* Header Styling */
+.skin-blue .main-header .logo {
+  background-color: var(--primary-dark);
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+.skin-blue .main-header .navbar {
+  background-color: var(--primary-dark);
+}
+
+.skin-blue .main-header .logo:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Sidebar Styling */
+.skin-blue .main-sidebar {
+  background-color: white;
+  border-right: 1px solid var(--border-color);
+}
+
+.skin-blue .sidebar-menu > li.active > a,
+.skin-blue .sidebar-menu > li:hover > a {
+  color: var(--accent-blue);
+  background-color: var(--secondary-light);
+  border-left: 3px solid var(--accent-blue);
+}
+
+.skin-blue .sidebar-menu > li > a {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Main Content Area */
+.content-wrapper {
+  background-color: var(--primary-light);
+}
+
+.box {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: none;
+  margin-bottom: 20px;
+}
+
+.box-header {
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 12px 12px 0 0;
+  padding: 15px 20px;
+}
+
+.box-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.box-body {
+  background-color: white;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+}
+
+.btn-default {
+  background-color: white;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-default:hover {
+  background-color: var(--secondary-light);
+  border-color: var(--text-secondary);
+}
+
+/* Form Controls */
+.form-control {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  outline: none;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+/* Select Inputs */
+.selectize-input {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: none;
+}
+
+.selectize-input.focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+.selectize-dropdown {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Alerts */
+.alert {
+  border-radius: 8px;
+  border: none;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.alert-info {
+  background-color: #e8f4fd;
+  color: #014361;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Progress Bar */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--secondary-light);
+}
+
+.progress-bar {
+  background-color: var(--accent-blue);
+  border-radius: 4px;
+}
+
+/* DataTables */
+.dataTables_wrapper {
+  font-size: 14px;
+}
+
+table.dataTable thead th {
+  background-color: var(--secondary-light);
+  color: var(--text-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-color);
+  padding: 12px 15px;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: var(--primary-light);
+}
+
+/* File Input */
+.btn-file {
+  background-color: var(--accent-blue);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+/* Info Box */
+.info-box {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 15px;
+}
+
+.info-box-icon {
+  border-radius: 8px 0 0 8px;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 20px 0;
+}
+
+/* Well Panels */
+.well {
+  background-color: var(--secondary-light);
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: none;
+}
+
+/* Plotly Container */
+.plotly {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Custom Classes */
+.section-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--secondary-light);
+}
+
+.help-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 5px;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Loading Spinner */
+.shiny-busy-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .box-title {
+    font-size: 16px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+}

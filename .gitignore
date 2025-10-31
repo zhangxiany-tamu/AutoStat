@@ -7,3 +7,7 @@
 *.tar.gz
 *.Rcheck
 test_*.R
+Rplots.pdf
+shiny_app/test_*.R
+shiny_app/app_test_validation.R
+shiny_app/TEST_RESULTS.md

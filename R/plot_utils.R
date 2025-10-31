@@ -432,17 +432,53 @@ save_plots_to_output_dir <- function(results, output_dir, data = NULL) {
 
           relative_filename_png <- basename(actual_filename_png)
 
-          png(actual_filename_png, width = 3000, height = 2100, res = 300)
-          replayPlot(plot_obj)
-          dev.off()
+          # Check if recordedplot contains any actual content
+          if (length(plot_obj) == 0 || is.null(plot_obj[[1]])) {
+            warning(paste("Recorded plot '", original_name, "' appears to be empty. Skipping save.", sep=""))
+            final_plot_files[[original_name]] <- NA
+            final_plot_titles[[original_name]] <- paste("Empty plot:", original_name)
+          } else {
+            # Open PNG device with explicit error checking
+            png_device <- tryCatch({
+              png(actual_filename_png, width = 3000, height = 2100, res = 300)
+              TRUE
+            }, error = function(e) {
+              warning(paste("Failed to open PNG device for '", original_name, "': ", e$message, sep=""))
+              FALSE
+            })
 
-          message(paste("Saved recorded plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
-          saved_plot_info_by_signature[[plot_signature]] <- list(
-            final_filename = relative_filename_png,
-            final_title = display_title
-          )
-          final_plot_files[[original_name]] <- relative_filename_png
-          final_plot_titles[[original_name]] <- display_title
+            if (png_device) {
+              # Replay the plot with error checking
+              replay_success <- tryCatch({
+                replayPlot(plot_obj)
+                TRUE
+              }, error = function(e) {
+                warning(paste("Failed to replay plot '", original_name, "': ", e$message, sep=""))
+                FALSE
+              })
+
+              # Close device
+              dev.off()
+
+              # Verify file was created and has content
+              if (replay_success && file.exists(actual_filename_png) && file.info(actual_filename_png)$size > 0) {
+                message(paste("Saved recorded plot '", original_name, "' as '", relative_filename_png, "' with title '", display_title, "'", sep=""))
+                saved_plot_info_by_signature[[plot_signature]] <- list(
+                  final_filename = relative_filename_png,
+                  final_title = display_title
+                )
+                final_plot_files[[original_name]] <- relative_filename_png
+                final_plot_titles[[original_name]] <- display_title
+              } else {
+                warning(paste("Recorded plot '", original_name, "' file was not created or is empty", sep=""))
+                final_plot_files[[original_name]] <- NA
+                final_plot_titles[[original_name]] <- paste("Failed to save plot:", original_name)
+              }
+            } else {
+              final_plot_files[[original_name]] <- NA
+              final_plot_titles[[original_name]] <- paste("Failed to create PNG device:", original_name)
+            }
+          }
 
         } else if (is.list(plot_obj) && "call" %in% names(plot_obj)) {
           # Handle other base R plots stored as lists with calls

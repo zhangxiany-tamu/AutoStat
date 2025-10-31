@@ -726,12 +726,21 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
   if (!is.null(results$plot_files) && length(results$plot_files) > 0) {
     html_content <- c(html_content, "<h2>Visualizations</h2>")
     included_plot_filenames <- character(0)
+    has_any_plots <- FALSE
 
     for (plot_orig_name in names(results$plot_files)) {
       plot_file_path <- results$plot_files[[plot_orig_name]]
       if (is.na(plot_file_path) || plot_file_path == "") next
 
+      # Verify the file actually exists before including it
+      full_plot_path <- file.path(output_dir, plot_file_path)
+      if (!file.exists(full_plot_path)) {
+        warning(paste("Plot file referenced but not found: ", full_plot_path, sep=""))
+        next
+      }
+
       if (!(plot_file_path %in% included_plot_filenames)) {
+        has_any_plots <- TRUE
         title <- results$plot_titles[[plot_orig_name]]
         if (is.null(title) || title == "") {
           title <- tools::toTitleCase(gsub("_", " ", tools::file_path_sans_ext(plot_file_path)))
@@ -757,7 +766,13 @@ generate_simplified_report <- function(data, question, analysis_plan, executable
         included_plot_filenames <- c(included_plot_filenames, plot_file_path)
       }
     }
-    html_content <- c(html_content, "<hr>")
+
+    # Only add the hr if we actually included plots
+    if (has_any_plots) {
+      html_content <- c(html_content, "<hr>")
+    } else {
+      html_content <- c(html_content, "<p><em>Note: Some plots could not be generated or saved. Check the analysis log for details.</em></p>", "<hr>")
+    }
   }
 
   if (length(model_tables_html) > 0) {
