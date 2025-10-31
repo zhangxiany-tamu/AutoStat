@@ -8,7 +8,7 @@ library(DT)
 library(plotly)
 library(htmltools)
 
-# Install and load AutoStat if available
+# Install and load AutoStat
 if (!require("AutoStat", quietly = TRUE)) {
   if (file.exists("../R")) {
     # Development mode - source files directly
@@ -20,7 +20,12 @@ if (!require("AutoStat", quietly = TRUE)) {
     source("../R/report_utils.R")
     source("../R/retry_utils.R")
   } else {
-    stop("AutoStat package not found. Please install it first.")
+    # Production mode - install from GitHub
+    if (!requireNamespace("remotes", quietly = TRUE)) {
+      install.packages("remotes")
+    }
+    remotes::install_github("zhangxiany-tamu/AutoStat", quiet = TRUE)
+    library(AutoStat)
   }
 }
 
