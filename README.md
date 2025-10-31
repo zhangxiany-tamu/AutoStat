@@ -103,19 +103,19 @@ results <- auto_stat(
 ### Latest Models (2025)
 
 **Anthropic Claude Models:**
-- `claude-sonnet-4-5-20250929` - Best for complex analysis and coding tasks
-- `claude-haiku-4-5-20251001` - Fast, cost-effective option
+- `claude-sonnet-4-5-20250929` - Best for complex analysis and coding tasks (Recommended)
 - `claude-opus-4-1-20250805` - Most capable for complex reasoning
+- `claude-haiku-4-5-20251001` - Fast and cost-effective
 
 **OpenAI Models:**
-- `gpt-5` - Latest flagship model with advanced reasoning
+- `gpt-5` - Latest flagship model with advanced reasoning (Recommended)
 - `gpt-5-mini` - Balanced performance and cost
 - `gpt-5-nano` - Fast and economical
-- `gpt-4o` - Still available, previous generation
+- `gpt-4o` - Previous generation, still capable
 
 **Google Gemini Models:**
+- `gemini-2.5-flash` - Fast with excellent performance (Recommended)
 - `gemini-2.5-pro` - Most advanced with 1M token context
-- `gemini-2.5-flash` - Fast with excellent performance
 - `gemini-2.5-flash-lite` - Most cost-efficient option
 
 ## Common Use Cases

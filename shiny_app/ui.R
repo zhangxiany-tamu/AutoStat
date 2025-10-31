@@ -376,6 +376,7 @@ dashboardPage(
             tags$ul(
               tags$li(strong("gpt-5"), " - Latest flagship model with advanced reasoning (Recommended)"),
               tags$li(strong("gpt-5-mini"), " - Balanced performance and cost"),
+              tags$li(strong("gpt-5-nano"), " - Fast and economical"),
               tags$li(strong("gpt-4o"), " - Previous generation, still capable")
             ),
 

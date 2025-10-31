@@ -49,16 +49,14 @@ sample_questions <- list(
 provider_models <- list(
   "anthropic" = c(
     "claude-sonnet-4-5-20250929" = "Claude Sonnet 4.5 (Recommended)",
+    "claude-opus-4-1-20250805" = "Claude Opus 4.1",
     "claude-haiku-4-5-20251001" = "Claude Haiku 4.5"
   ),
   "openai" = c(
     "gpt-5" = "GPT-5 (Recommended)",
     "gpt-5-mini" = "GPT-5 Mini",
     "gpt-5-nano" = "GPT-5 Nano",
-    "gpt-4o" = "GPT-4o",
-    "gpt-4o-mini" = "GPT-4o Mini",
-    "gpt-4-turbo" = "GPT-4 Turbo",
-    "gpt-4" = "GPT-4"
+    "gpt-4o" = "GPT-4o"
   ),
   "gemini" = c(
     "gemini-2.5-flash" = "Gemini 2.5 Flash (Recommended)",
