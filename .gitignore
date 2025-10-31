@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+.claude
+.DS_Store
+*.tar.gz
+*.Rcheck
+test_*.R

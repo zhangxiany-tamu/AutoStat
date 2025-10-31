@@ -35,16 +35,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Using Anthropic's Claude with specific model
+#' # Using Anthropic's Claude Sonnet 4.5
 #' results <- auto_stat(
 #'   data = mtcars,
 #'   question = "What factors are most strongly associated with quarter-mile time?",
 #'   api_key = "your_anthropic_api_key",
 #'   llm_provider = "anthropic",
-#'   llm_model = "claude-3-opus-20240229"
+#'   llm_model = "claude-sonnet-4-5-20250929"
 #' )
 #'
-#' # Using Gemini with default model
+#' # Using OpenAI's GPT-5
+#' results <- auto_stat(
+#'   data = iris,
+#'   question = "Can we distinguish iris species based on measurements?",
+#'   api_key = "your_openai_api_key",
+#'   llm_provider = "openai",
+#'   llm_model = "gpt-5"
+#' )
+#'
+#' # Using Gemini 2.5 Flash (default)
 #' results <- auto_stat(
 #'   data = airquality,
 #'   question = "How do temperature and wind speed affect ozone levels?",
@@ -80,10 +89,10 @@ auto_stat <- function(data, question, api_key,
   # Now set default model based on provider if not specified
   if (is.null(llm_model)) {
     llm_model <- switch(llm_provider,
-                        "gemini" = "gemini-2.0-flash",
-                        "openai" = "gpt-3.5-turbo",
-                        "anthropic" = "claude-3-opus-20240229",
-                        "gemini-2.0-flash") # Default to gemini if provider not recognized
+                        "gemini" = "gemini-2.5-flash",
+                        "openai" = "gpt-5",
+                        "anthropic" = "claude-sonnet-4-5-20250929",
+                        "gemini-2.5-flash") # Default to gemini if provider not recognized
   }
 
   # Set up directory structure

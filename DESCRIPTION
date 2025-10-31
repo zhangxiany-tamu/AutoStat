@@ -1,13 +1,14 @@
 Package: AutoStat
 Title: Automated Statistical Analysis Using Large Language Models
-Version: 0.1.0
-Authors@R: 
-    person("Xianyang", "Zhang", 
-    email = "zhangxiany@stat.tamu.edu", 
+Version: 0.2.0
+Authors@R:
+    person("Xianyang", "Zhang",
+    email = "zhangxiany@stat.tamu.edu",
     role = c("aut", "cre"))
-Description: Leverages large language models to automate statistical analysis tasks.
-    Users provide a dataset and research question, and the package determines appropriate
-    analysis methods, executes them, and produces interpretable reports.
+Description: Leverages large language models (GPT-5, Claude Sonnet 4.5, Gemini 2.5) to
+    automate statistical analysis tasks. Users provide a dataset and research question,
+    and the package determines appropriate analysis methods, executes them, and produces
+    interpretable reports with professional visualizations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

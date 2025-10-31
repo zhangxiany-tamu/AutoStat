@@ -15,26 +15,26 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Create a connection to Gemini
+#' # Create a connection to Gemini 2.5
 #' gemini_conn <- create_llm_connection(
 #'   provider = "gemini",
 #'   api_key = "your_gemini_api_key",
-#'   model = "gemini-1.0-pro"
+#'   model = "gemini-2.5-flash"
 #' )
 #'
-#' # Create a connection to OpenAI with organization ID
+#' # Create a connection to OpenAI GPT-5
 #' openai_conn <- create_llm_connection(
 #'   provider = "openai",
 #'   api_key = "your_openai_api_key",
-#'   model = "gpt-4",
+#'   model = "gpt-5",
 #'   organization_id = "your_org_id"
 #' )
 #'
-#' # Create a connection to Anthropic's Claude
+#' # Create a connection to Anthropic Claude Sonnet 4.5
 #' claude_conn <- create_llm_connection(
 #'   provider = "anthropic",
 #'   api_key = "your_anthropic_api_key",
-#'   model = "claude-3-opus-20240229"
+#'   model = "claude-sonnet-4-5-20250929"
 #' )
 #' }
 #' @export
@@ -73,7 +73,7 @@ create_llm_connection <- function(provider, api_key, model, ...) {
 #' conn <- create_llm_connection(
 #'   provider = "gemini",
 #'   api_key = "your_gemini_api_key",
-#'   model = "gemini-1.0-pro"
+#'   model = "gemini-2.5-flash"
 #' )
 #'
 #' # Send a simple prompt
@@ -626,9 +626,9 @@ process_code <- function(code) {
 #' @examples
 #' \dontrun{
 #' # Detect provider from model name
-#' provider <- detect_provider_from_model("gemini-1.0-pro")  # Returns "gemini"
-#' provider <- detect_provider_from_model("gpt-4")           # Returns "openai"
-#' provider <- detect_provider_from_model("claude-3-opus")   # Returns "anthropic"
+#' provider <- detect_provider_from_model("gemini-2.5-flash")           # Returns "gemini"
+#' provider <- detect_provider_from_model("gpt-5")                      # Returns "openai"
+#' provider <- detect_provider_from_model("claude-sonnet-4-5-20250929") # Returns "anthropic"
 #' }
 #' @keywords internal
 detect_provider_from_model <- function(model) {
@@ -638,14 +638,16 @@ detect_provider_from_model <- function(model) {
 
   model <- tolower(trimws(model))
 
-  # OpenAI models
+  # OpenAI models (including GPT-5 series)
   if (grepl("^gpt-", model) ||
+      grepl("^o1-", model) ||
+      grepl("^o3-", model) ||
       grepl("^text-", model) ||
       model %in% c("davinci", "curie", "babbage", "ada")) {
     return("openai")
   }
 
-  # Gemini models
+  # Gemini models (including 2.5 series)
   if (grepl("^gemini-", model) ||
       grepl("^palm-", model) ||
       grepl("^bison-", model) ||
@@ -653,7 +655,7 @@ detect_provider_from_model <- function(model) {
     return("gemini")
   }
 
-  # Anthropic models
+  # Anthropic models (including Claude 4 and 4.5 series)
   if (grepl("^claude-", model) ||
       grepl("^anthropic\\.", model)) {
     return("anthropic")

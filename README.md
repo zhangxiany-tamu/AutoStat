@@ -45,7 +45,7 @@ results <- auto_stat(
   question = "What factors are most strongly associated with fuel efficiency (mpg)?",
   api_key = "your_api_key",
   llm_provider = "anthropic",
-  llm_model = "claude-3-5-sonnet-20241022"
+  llm_model = "claude-sonnet-4-5-20250929"
 )
 
 # View the generated report
@@ -85,7 +85,7 @@ results <- auto_stat(
   question = "How do weather conditions affect ozone levels?",
   api_key = "your_api_key",
   llm_provider = "anthropic",
-  llm_model = "claude-3-5-sonnet-20241022",
+  llm_model = "claude-sonnet-4-5-20250929",
   llm_generation_params = list(temperature = 0.1, max_tokens = 3000),
   max_rows = 100  # Include more data in prompts for larger datasets
 )
@@ -95,9 +95,27 @@ results <- auto_stat(
 
 | Provider | Example Model | API Key Source |
 |----------|---------------|----------------|
-| Anthropic | `claude-3-5-sonnet-20241022` | [Console](https://console.anthropic.com/) |
-| OpenAI | `gpt-4o` | [Platform](https://platform.openai.com/) |
-| Google | `gemini-2.0-flash` | [AI Studio](https://ai.google.dev/) |
+| Anthropic | `claude-sonnet-4-5-20250929` | [Console](https://console.anthropic.com/) |
+| OpenAI | `gpt-5` | [Platform](https://platform.openai.com/) |
+| Google | `gemini-2.5-flash` | [AI Studio](https://ai.google.dev/) |
+
+### Latest Models (2025)
+
+**Anthropic Claude Models:**
+- `claude-sonnet-4-5-20250929` - Best for complex analysis and coding tasks
+- `claude-haiku-4-5-20251001` - Fast, cost-effective option
+- `claude-opus-4-1-20250805` - Most capable for complex reasoning
+
+**OpenAI Models:**
+- `gpt-5` - Latest flagship model with advanced reasoning
+- `gpt-5-mini` - Balanced performance and cost
+- `gpt-5-nano` - Fast and economical
+- `gpt-4o` - Still available, previous generation
+
+**Google Gemini Models:**
+- `gemini-2.5-pro` - Most advanced with 1M token context
+- `gemini-2.5-flash` - Fast with excellent performance
+- `gemini-2.5-flash-lite` - Most cost-efficient option
 
 ## Common Use Cases
 
