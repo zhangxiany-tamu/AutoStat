@@ -17,6 +17,7 @@
 - **Visualizations**: Creates plots based on your research questions
 - **Reports**: Generates HTML reports with interpretations, visualizations, and code
 - **Error Handling**: Includes error detection and resolution for generated code
+- **Web Interface**: Interactive Shiny application available at [zhangxianyang.shinyapps.io/AutoStat](https://zhangxianyang.shinyapps.io/AutoStat/)
 
 ## Installation
 
