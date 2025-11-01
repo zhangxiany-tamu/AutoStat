@@ -11,7 +11,6 @@ Description: Leverages large language models (GPT-5, Claude Sonnet 4.5, Gemini 2
     interpretable reports with professional visualizations.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 

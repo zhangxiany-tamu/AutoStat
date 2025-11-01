@@ -3,3 +3,10 @@
 ^Sample reports$
 ^LICENSE\.md$
 ^images$
+^shiny_app$
+^\.git$
+^\.gitignore$
+^cran-comments\.md$
+^\.claude$
+^README\.md$
+^\.github$
